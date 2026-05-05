@@ -96,7 +96,7 @@ export default async function HomePage({
                     {article.title}
                   </h2>
                   {article.summary && (
-                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
+                    <p className="text-gray-500 text-sm leading-relaxed">
                       {article.summary}
                     </p>
                   )}

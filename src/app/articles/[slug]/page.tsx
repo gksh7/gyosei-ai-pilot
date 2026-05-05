@@ -97,7 +97,7 @@ export default async function ArticlePage({
       )}
 
       <div
-        className="prose prose-gray max-w-none leading-relaxed"
+        className="prose prose-gray max-w-none leading-loose"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
 
