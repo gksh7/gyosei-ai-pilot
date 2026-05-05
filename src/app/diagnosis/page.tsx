@@ -123,7 +123,7 @@ export default function DiagnosisPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4">
+      <div className="max-w-4xl mx-auto px-4 py-8 flex flex-col items-center justify-center py-24 gap-4">
         <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
         <p className="text-gray-500 text-sm">AIが診断中です...</p>
       </div>
@@ -133,6 +133,7 @@ export default function DiagnosisPage() {
   if (result) {
     const styles = riskStyles[result.riskLevel];
     return (
+      <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="space-y-6 max-w-lg mx-auto">
         <div className={`rounded-2xl border p-6 ${styles.bg} ${styles.border}`}>
           <div className="flex items-center gap-3 mb-4">
@@ -183,10 +184,12 @@ export default function DiagnosisPage() {
           </Link>
         </div>
       </div>
+      </div>
     );
   }
 
   return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
     <div className="max-w-lg mx-auto space-y-6">
       <div>
         <h1 className="text-xl font-bold text-gray-900 mb-1">コンプライアンス診断</h1>
@@ -224,6 +227,7 @@ export default function DiagnosisPage() {
       </div>
 
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+    </div>
     </div>
   );
 }

@@ -25,6 +25,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.diagnosis-btn {
+  box-shadow: 0 3px 8px rgba(8, 44, 124, 0.6);
+}
+.diagnosis-btn:hover {
+  box-shadow: 0 5px 12px rgba(8, 44, 124, 0.75);
+}
+
 .prose p, .prose li {
   font-size: 0.875rem;
 }

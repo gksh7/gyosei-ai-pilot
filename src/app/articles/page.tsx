@@ -40,7 +40,7 @@ export default async function ArticlesPage({
   const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-5">
         <h1 className="text-xl font-bold text-gray-900 mb-1">記事一覧</h1>
         <p className="text-gray-600 text-sm">

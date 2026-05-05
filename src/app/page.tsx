@@ -53,27 +53,46 @@ export default async function HomePage({
   const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
-    <div className="space-y-10">
-      {/* コンプライアンス診断バナー */}
-      <div className="rounded-2xl p-6 text-white" style={{ background: "linear-gradient(to right, #2563eb, #24459b)" }}>
-        <p className="text-blue-100 text-xs font-medium mb-1">無料・即時診断</p>
-        <h2 className="text-2xl font-bold mb-2">
-          あなたの会社は大丈夫？
-        </h2>
-        <p className="text-blue-100 text-sm mb-4 leading-relaxed">
-          2026年改正行政書士法への対応状況をAIが診断。
-          コンサル・人材・通信教育企業の法務リスクを今すぐチェック。
-        </p>
-        <Link
-          href="/diagnosis"
-          className="inline-block bg-white text-base px-[15px] sm:px-7 py-3 rounded-full hover:bg-blue-50 transition-colors"
-          style={{ color: "#2563eb", fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
-        >
-          コンプライアンス診断を始める →
-        </Link>
+    <div>
+      {/* コンプライアンス診断バナー（フルワイド） */}
+      <div className="relative overflow-hidden text-white" style={{ maxWidth: "2020px", margin: "0 auto" }}>
+        {/* SP: 画像を背景に */}
+        <div className="absolute inset-0 sm:hidden">
+          <img src="/mv_sp.png" alt="" className="w-full h-full object-cover object-center" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(37,99,235,0.88), rgba(36,69,155,0.72))" }} />
+        </div>
+
+        {/* PC: 左グラデーション + 右に画像 */}
+        <div className="absolute inset-0 hidden sm:flex">
+          <div className="w-3/5 h-full" style={{ background: "linear-gradient(to right, #2563eb, #24459b)" }} />
+          <div className="w-2/5 h-full relative">
+            <img src="/mv_pc.png" alt="" className="w-full h-full object-cover object-left" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to right, #24459b, transparent)" }} />
+          </div>
+        </div>
+
+        {/* テキスト・ボタン */}
+        <div className="relative px-6 py-10 sm:py-16 sm:px-16 sm:max-w-[55%]">
+          <p className="text-blue-100 text-xs font-medium mb-1">無料・即時診断</p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3">
+            あなたの会社は大丈夫？
+          </h2>
+          <p className="text-blue-100 text-sm mb-6 leading-relaxed">
+            2026年改正行政書士法への対応状況をAIが診断。
+            コンサル・人材・通信教育企業の法務リスクを今すぐチェック。
+          </p>
+          <Link
+            href="/diagnosis"
+            className="diagnosis-btn inline-block bg-white text-base px-7 py-3 rounded-full transition-all duration-200 hover:scale-105"
+            style={{ color: "#2563eb", fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
+          >
+            コンプライアンス診断を始める →
+          </Link>
+        </div>
       </div>
 
-      {/* 記事一覧 */}
+      {/* 記事一覧（コンテナ内） */}
+      <div className="max-w-4xl mx-auto px-4 py-8">
       <div>
         <div className="mb-5">
           <h1 className="text-xl font-bold text-gray-900 mb-0.5">
@@ -150,6 +169,7 @@ export default async function HomePage({
             )}
           </>
         )}
+      </div>
       </div>
     </div>
   );

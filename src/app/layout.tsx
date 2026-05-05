@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="ja" className={`${geist.className} ${notoSansJP.variable}`}>
       <body className="min-h-screen bg-gray-50 text-gray-900">
         <Header />
-        <main className="max-w-4xl mx-auto px-4 py-8">
+        <main>
           {children}
         </main>
         <footer className="border-t border-gray-200 mt-16">
