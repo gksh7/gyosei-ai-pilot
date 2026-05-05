@@ -28,52 +28,73 @@ export default async function HomePage() {
   const articles = await getArticles();
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">最新記事</h1>
-        <p className="text-gray-600 text-sm">
-          AIが官公庁・法律ニュースを毎日収集・解説します
+    <div className="space-y-10">
+      {/* コンプライアンス診断バナー */}
+      <div className="rounded-2xl p-6 text-white" style={{ background: "linear-gradient(to right, #2563eb, #24459b)" }}>
+        <p className="text-blue-100 text-xs font-medium mb-1">無料・即時診断</p>
+        <h2 className="text-xl font-bold mb-2">
+          あなたの会社は大丈夫？
+        </h2>
+        <p className="text-blue-100 text-sm mb-4 leading-relaxed">
+          2026年改正行政書士法への対応状況をAIが診断。
+          コンサル・人材・通信教育企業の法務リスクを今すぐチェック。
         </p>
+        <Link
+          href="/diagnosis"
+          className="inline-block bg-white text-blue-600 font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-blue-50 transition-colors"
+        >
+          コンプライアンス診断を始める →
+        </Link>
       </div>
 
-      {articles.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-          <p className="text-gray-500 text-lg mb-2">記事を準備中です</p>
-          <p className="text-gray-400 text-sm">毎朝自動的に記事が追加されます</p>
+      {/* 記事一覧 */}
+      <div>
+        <div className="mb-5">
+          <h1 className="text-xl font-bold text-gray-900 mb-1">最新記事</h1>
+          <p className="text-gray-500 text-sm">
+            AIが官公庁・法律ニュースを毎日収集・解説します
+          </p>
         </div>
-      ) : (
-        <div className="space-y-4">
-          {articles.map((article) => (
-            <Link
-              key={article.id}
-              href={`/articles/${article.slug}`}
-              className="block bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-sm transition-all"
-            >
-              <div className="flex gap-2 mb-3 flex-wrap">
-                {article.tags?.slice(0, 3).map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2 leading-snug">
-                {article.title}
-              </h2>
-              {article.summary && (
-                <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
-                  {article.summary}
+
+        {articles.length === 0 ? (
+          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+            <p className="text-gray-500 text-lg mb-2">記事を準備中です</p>
+            <p className="text-gray-400 text-sm">毎朝自動的に記事が追加されます</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {articles.map((article) => (
+              <Link
+                key={article.id}
+                href={`/articles/${article.slug}`}
+                className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-300 hover:shadow-sm transition-all"
+              >
+                <div className="flex gap-2 mb-2 flex-wrap">
+                  {article.tags?.slice(0, 3).map((tag: string) => (
+                    <span
+                      key={tag}
+                      className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+                <h2 className="text-base font-semibold text-gray-900 mb-1.5 leading-snug">
+                  {article.title}
+                </h2>
+                {article.summary && (
+                  <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
+                    {article.summary}
+                  </p>
+                )}
+                <p className="text-xs text-gray-400 mt-2">
+                  {formatDate(article.created_at)}
                 </p>
-              )}
-              <p className="text-xs text-gray-400 mt-3">
-                {formatDate(article.created_at)}
-              </p>
-            </Link>
-          ))}
-        </div>
-      )}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
