@@ -4,7 +4,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 type ScrapedContent = { source: string; url: string; content: string }
 
-export async function generateArticle(scrapedContent: ScrapedContent[]) {
+export async function generateArticle(scrapedContent: ScrapedContent[], recentTitles: string[] = []) {
   const sourceText = scrapedContent
     .slice(0, 5)
     .map(s => `【${s.source}】\n${s.content}`)
@@ -20,7 +20,7 @@ export async function generateArticle(scrapedContent: ScrapedContent[]) {
       role: 'user',
       content: `以下の官公庁・ニュース情報をもとに記事を1本作成してください。
 
-【収集情報】
+${recentTitles.length > 0 ? `【掲載済み記事タイトル（これらと重複するトピックは避けてください）】\n${recentTitles.map(t => `・${t}`).join('\n')}\n\n` : ''}【収集情報】
 ${sourceText}
 
 以下のJSON形式のみで出力（前後に文章不要）：

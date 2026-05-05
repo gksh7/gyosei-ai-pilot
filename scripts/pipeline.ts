@@ -14,12 +14,20 @@ async function run() {
   }
   console.log(`📰 ${scraped.length}件のコンテンツを取得`)
 
-  // 2. 記事生成
+  // 2. 直近の記事タイトルを取得（重複防止）
+  const { data: recentArticles } = await supabase
+    .from('articles')
+    .select('title')
+    .order('created_at', { ascending: false })
+    .limit(30)
+  const recentTitles = (recentArticles ?? []).map((a: { title: string }) => a.title)
+
+  // 3. 記事生成
   console.log('✍️ 記事生成中...')
-  const article = await generateArticle(scraped)
+  const article = await generateArticle(scraped, recentTitles)
   console.log(`記事生成完了: ${article.title}`)
 
-  // 3. Supabaseに保存（参照元IDを含める）
+  // 4. Supabaseに保存（参照元IDを含める）
   article.source_ids = scraped.map(s => s.id)
   const { data, error } = await supabase
     .from('articles')
@@ -33,7 +41,7 @@ async function run() {
   }
   console.log('✅ 記事保存完了:', data.id)
 
-  // 4. X投稿
+  // 5. X投稿
   const tweetId = await postToX(data)
   if (tweetId) {
     await supabase
