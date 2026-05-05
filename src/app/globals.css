@@ -26,10 +26,14 @@ body {
 }
 
 .diagnosis-btn {
-  box-shadow: 0 3px 8px rgba(8, 44, 124, 0.6);
+  background: linear-gradient(135deg, #f5c842 0%, #e8991a 50%, #d4770a 100%);
+  color: #3d1f00 !important;
+  box-shadow: 0 4px 12px rgba(212, 119, 10, 0.55), 0 1px 3px rgba(0,0,0,0.25);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
 }
 .diagnosis-btn:hover {
-  box-shadow: 0 5px 12px rgba(8, 44, 124, 0.75);
+  background: linear-gradient(135deg, #fad454 0%, #f0a820 50%, #dc8810 100%);
+  box-shadow: 0 6px 18px rgba(212, 119, 10, 0.7), 0 2px 6px rgba(0,0,0,0.3);
 }
 
 .prose p, .prose li {

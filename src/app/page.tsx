@@ -97,8 +97,8 @@ export default async function HomePage({
           </p>
           <Link
             href="/diagnosis"
-            className="diagnosis-btn inline-block bg-white text-base px-7 py-3 rounded-full transition-all duration-200 hover:scale-105"
-            style={{ color: "#2563eb", fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
+            className="diagnosis-btn inline-block text-base font-bold px-9 py-3.5 rounded-full transition-all duration-200 hover:scale-105"
+            style={{ fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
           >
             コンプライアンス診断を始める →
           </Link>
