@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Noto_Sans_JP } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"] });
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["700", "900"],
+  variable: "--font-noto-sans-jp",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -26,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" className={geist.className}>
+    <html lang="ja" className={`${geist.className} ${notoSansJP.variable}`}>
       <body className="min-h-screen bg-gray-50 text-gray-900">
         <Header />
         <main className="max-w-4xl mx-auto px-4 py-8">

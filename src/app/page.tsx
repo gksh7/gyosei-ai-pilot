@@ -66,7 +66,7 @@ export default async function HomePage({
         </p>
         <Link
           href="/diagnosis"
-          className="inline-block bg-white font-black text-base px-[15px] sm:px-7 py-3 rounded-full hover:bg-blue-50 transition-colors"
+          className="inline-block bg-white text-base px-[15px] sm:px-7 py-3 rounded-full hover:bg-blue-50 transition-colors"
           style={{ color: "#2563eb", fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
         >
           コンプライアンス診断を始める →

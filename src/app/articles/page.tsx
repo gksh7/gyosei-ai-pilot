@@ -43,14 +43,14 @@ export default async function ArticlesPage({
     <div>
       <div className="mb-5">
         <h1 className="text-xl font-bold text-gray-900 mb-1">記事一覧</h1>
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-600 text-sm">
           AIが官公庁・法律ニュースを毎日収集・解説します
         </p>
       </div>
 
       {articles.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-          <p className="text-gray-500 text-lg mb-2">記事を準備中です</p>
+          <p className="text-gray-600 text-lg mb-2">記事を準備中です</p>
           <p className="text-gray-400 text-sm">毎朝自動的に記事が追加されます</p>
         </div>
       ) : (
@@ -76,7 +76,7 @@ export default async function ArticlesPage({
                   {article.title}
                 </h2>
                 {article.summary && (
-                  <p className="text-gray-500 text-sm leading-relaxed">
+                  <p className="text-gray-600 text-sm leading-relaxed">
                     {article.summary}
                   </p>
                 )}
@@ -97,7 +97,7 @@ export default async function ArticlesPage({
                   ← 前へ
                 </Link>
               )}
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-600">
                 {page} / {totalPages}
               </span>
               {page < totalPages && (

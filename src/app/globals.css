@@ -24,3 +24,16 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.prose p, .prose li {
+  font-size: 0.875rem;
+}
+
+.prose h2 {
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  border-left: 4px solid var(--color-gray-900);
+  padding-left: 10px;
+  line-height: 1.4;
+}

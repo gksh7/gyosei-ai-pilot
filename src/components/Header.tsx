@@ -9,13 +9,13 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50" style={{ borderTop: "5px solid #2563eb" }}>
         <div className="max-w-4xl mx-auto px-4 py-2 sm:py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 min-w-0" onClick={() => setOpen(false)}>
-            <Image src="/logo.svg" alt="ロゴ" width={32} height={32} />
-            <div className="flex flex-col gap-1.5">
-              <span className="text-xs text-blue-600 font-medium leading-none">Legal AI Pilot</span>
-              <span className="text-lg font-bold text-gray-900 leading-none whitespace-nowrap">
+          <Image src="/logo.svg" alt="ロゴ" width={38} height={38} className="w-10 h-10 sm:w-[42px] sm:h-[42px]" />
+            <div className="flex flex-col gap-2.5">
+              <span className="text-xs font-medium leading-none" style={{ color: '#23449c' }}>Legal AI Pilot</span>
+              <span className="text-2xl sm:text-3xl font-bold text-gray-900 leading-none whitespace-nowrap" style={{ textIndent: '-0.1em' }}>
                 行政書士AI Pilot
               </span>
             </div>
@@ -68,8 +68,21 @@ export default function Header() {
           transition: "transform 0.3s ease-in-out",
         }}
       >
-        <nav className="flex flex-col px-6 py-8 gap-7 text-base text-gray-700">
-          <Link href="/" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
+        {/* 閉じるボタン */}
+        <div className="flex justify-end px-4 py-2">
+          <button
+            onClick={() => setOpen(false)}
+            className="p-1.5 text-gray-600"
+            aria-label="閉じる"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <nav className="flex flex-col px-6 py-4 gap-7 text-base text-gray-700">
+          <Link href="/articles" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
             記事一覧
           </Link>
           <Link href="/diagnosis" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
