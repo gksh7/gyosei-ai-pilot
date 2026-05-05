@@ -15,7 +15,7 @@ export default function Header() {
             <Image src="/logo.svg" alt="ロゴ" width={32} height={32} />
             <div className="flex flex-col gap-1.5">
               <span className="text-xs text-blue-600 font-medium leading-none">Legal AI Pilot</span>
-              <span className="text-base font-bold text-gray-900 leading-none whitespace-nowrap">
+              <span className="text-lg font-bold text-gray-900 leading-none whitespace-nowrap">
                 行政書士AI Pilot
               </span>
             </div>
@@ -23,7 +23,7 @@ export default function Header() {
 
           {/* PC nav */}
           <nav className="hidden sm:flex gap-4 text-sm text-gray-600 shrink-0">
-            <Link href="/" className="hover:text-blue-600 transition-colors">記事一覧</Link>
+            <Link href="/articles" className="hover:text-blue-600 transition-colors">記事一覧</Link>
             <Link href="/diagnosis" className="hover:text-blue-600 transition-colors">コンプライアンス診断</Link>
           </nav>
 
