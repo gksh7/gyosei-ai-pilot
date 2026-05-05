@@ -55,25 +55,39 @@ export default async function HomePage({
   return (
     <div>
       {/* コンプライアンス診断バナー（フルワイド） */}
-      <div className="relative overflow-hidden text-white" style={{ maxWidth: "2020px", margin: "0 auto" }}>
-        {/* SP: 画像を背景に */}
+      <div
+        className="relative overflow-hidden text-white"
+        style={{ backgroundColor: "#0c2461", minHeight: "300px" }}
+      >
+        {/* 背景画像（中央揃え・最大2020px） */}
+        <div
+          className="absolute top-0 bottom-0 hidden sm:block"
+          style={{
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "min(100%, 2020px)",
+          }}
+        >
+          <img src="/mv_pc.png" alt="" className="w-full h-full object-cover object-center" />
+          {/* 2020px超の両端をフェード */}
+          <div className="absolute inset-y-0 left-0 w-24" style={{ background: "linear-gradient(to right, #0c2461, transparent)" }} />
+          <div className="absolute inset-y-0 right-0 w-24" style={{ background: "linear-gradient(to left, #0c2461, transparent)" }} />
+        </div>
+
+        {/* SP背景画像 */}
         <div className="absolute inset-0 sm:hidden">
           <img src="/mv_sp.png" alt="" className="w-full h-full object-cover object-center" />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(37,99,235,0.88), rgba(36,69,155,0.72))" }} />
         </div>
 
-        {/* PC: 左グラデーション + 右に画像 */}
-        <div className="absolute inset-0 hidden sm:flex">
-          <div className="w-3/5 h-full" style={{ background: "linear-gradient(to right, #2563eb, #24459b)" }} />
-          <div className="w-2/5 h-full relative">
-            <img src="/mv_pc.png" alt="" className="w-full h-full object-cover object-left" />
-            <div className="absolute inset-0" style={{ background: "linear-gradient(to right, #24459b, transparent)" }} />
-          </div>
-        </div>
+        {/* テキスト読みやすくする左グラデーション */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(to right, rgba(12,36,97,0.92) 0%, rgba(12,36,97,0.7) 40%, rgba(12,36,97,0.15) 65%, transparent 100%)" }}
+        />
 
         {/* テキスト・ボタン */}
-        <div className="relative px-6 py-10 sm:py-16 sm:px-16 sm:max-w-[55%]">
-          <p className="text-blue-100 text-xs font-medium mb-1">無料・即時診断</p>
+        <div className="relative px-6 py-10 sm:py-14 sm:px-16 sm:max-w-[52%]">
+          <p className="text-blue-200 text-xs font-medium mb-1">無料・即時診断</p>
           <h2 className="text-2xl sm:text-3xl font-bold mb-3">
             あなたの会社は大丈夫？
           </h2>
