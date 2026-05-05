@@ -4,16 +4,21 @@ import Link from "next/link";
 
 export const revalidate = 3600;
 
-async function getArticles(): Promise<Article[]> {
-  const { data, error } = await supabase
+const PER_PAGE = 10;
+
+async function getArticles(page: number): Promise<{ articles: Article[]; total: number }> {
+  const from = (page - 1) * PER_PAGE;
+  const to = from + PER_PAGE - 1;
+
+  const { data, error, count } = await supabase
     .from("articles")
-    .select("*")
+    .select("*", { count: "exact" })
     .eq("status", "published")
     .order("created_at", { ascending: false })
-    .limit(20);
+    .range(from, to);
 
-  if (error) return [];
-  return data ?? [];
+  if (error) return { articles: [], total: 0 };
+  return { articles: data ?? [], total: count ?? 0 };
 }
 
 function formatDate(dateStr: string) {
@@ -24,8 +29,15 @@ function formatDate(dateStr: string) {
   });
 }
 
-export default async function HomePage() {
-  const articles = await getArticles();
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1", 10));
+  const { articles, total } = await getArticles(page);
+  const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
     <div className="space-y-10">
@@ -62,37 +74,64 @@ export default async function HomePage() {
             <p className="text-gray-400 text-sm">毎朝自動的に記事が追加されます</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {articles.map((article) => (
-              <Link
-                key={article.id}
-                href={`/articles/${article.slug}`}
-                className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-300 hover:shadow-sm transition-all"
-              >
-                <div className="flex gap-2 mb-2 flex-wrap">
-                  {article.tags?.slice(0, 3).map((tag: string) => (
-                    <span
-                      key={tag}
-                      className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-                <h2 className="text-base font-semibold text-gray-900 mb-1.5 leading-snug">
-                  {article.title}
-                </h2>
-                {article.summary && (
-                  <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
-                    {article.summary}
+          <>
+            <div className="space-y-4">
+              {articles.map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/articles/${article.slug}`}
+                  className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-300 hover:shadow-sm transition-all"
+                >
+                  <div className="flex gap-2 mb-2 flex-wrap">
+                    {article.tags?.slice(0, 3).map((tag: string) => (
+                      <span
+                        key={tag}
+                        className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h2 className="text-base font-semibold text-gray-900 mb-1.5 leading-snug">
+                    {article.title}
+                  </h2>
+                  {article.summary && (
+                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
+                      {article.summary}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-400 mt-2">
+                    {formatDate(article.created_at)}
                   </p>
+                </Link>
+              ))}
+            </div>
+
+            {/* ページネーション */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                {page > 1 && (
+                  <Link
+                    href={`/?page=${page - 1}`}
+                    className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                  >
+                    ← 前へ
+                  </Link>
                 )}
-                <p className="text-xs text-gray-400 mt-2">
-                  {formatDate(article.created_at)}
-                </p>
-              </Link>
-            ))}
-          </div>
+                <span className="text-sm text-gray-500">
+                  {page} / {totalPages}
+                </span>
+                {page < totalPages && (
+                  <Link
+                    href={`/?page=${page + 1}`}
+                    className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                  >
+                    次へ →
+                  </Link>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

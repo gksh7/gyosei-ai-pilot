@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import type { Article } from "@/lib/types";
+import type { Article, Source } from "@/lib/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -15,6 +15,18 @@ async function getArticle(slug: string): Promise<Article | null> {
 
   if (error) return null;
   return data;
+}
+
+type SourceSummary = Pick<Source, "id" | "name" | "url" | "tier">
+
+async function getSources(sourceIds: string[]): Promise<SourceSummary[]> {
+  if (!sourceIds || sourceIds.length === 0) return [];
+  const { data } = await supabase
+    .from("sources")
+    .select("id, name, url, tier")
+    .in("id", sourceIds)
+    .order("tier");
+  return (data as SourceSummary[]) ?? [];
 }
 
 export async function generateMetadata({
@@ -56,6 +68,8 @@ export default async function ArticlePage({
 
   if (!article) notFound();
 
+  const sources = await getSources(article.source_ids ?? []);
+
   return (
     <article>
       <div className="mb-6">
@@ -86,6 +100,26 @@ export default async function ArticlePage({
         className="prose prose-gray max-w-none leading-relaxed"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
+
+      {sources.length > 0 && (
+        <div className="mt-10 pt-6 border-t border-gray-200">
+          <p className="text-xs font-medium text-gray-500 mb-3">参考情報源</p>
+          <ul className="space-y-1.5">
+            {sources.map((source: SourceSummary) => (
+              <li key={source.id}>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  {source.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </article>
   );
 }
