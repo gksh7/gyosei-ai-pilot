@@ -38,14 +38,21 @@ export async function generateMetadata({
   const article = await getArticle(slug);
   if (!article) return {};
 
+  const title = article.seo_title ?? article.title;
+  const description = article.seo_description ?? article.summary ?? undefined;
+  const url = `${process.env.NEXT_PUBLIC_SITE_URL}/articles/${slug}`;
+
   return {
-    title: article.seo_title ?? article.title,
-    description: article.seo_description ?? article.summary ?? undefined,
+    title,
+    description,
+    alternates: { canonical: url },
     openGraph: {
-      title: article.seo_title ?? article.title,
-      description: article.seo_description ?? article.summary ?? undefined,
+      title,
+      description,
       type: "article",
       publishedTime: article.created_at,
+      url,
+      siteName: "行政書士AI Pilot｜2026法改正ナビ",
     },
   };
 }
