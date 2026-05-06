@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { DIAGNOSIS_DISCLAIMER } from "@/lib/gyosei-law";
 
 const QUESTIONS = [
   {
@@ -15,11 +16,27 @@ const QUESTIONS = [
     ],
   },
   {
-    question: "行政手続きに関するサービスを提供していますか？",
+    question: "行政手続き（許認可申請・補助金申請・在留資格申請等）に関するサービスを提供していますか？",
     options: [
       "はい、代行・サポートサービスを提供している",
       "一部のサービスで関わることがある",
       "いいえ、提供していない",
+    ],
+  },
+  {
+    question: "そのサービスは反復継続的に（＝業として）提供していますか？",
+    options: [
+      "はい、継続的に提供している",
+      "案件単位・スポットで対応している",
+      "提供していない",
+    ],
+  },
+  {
+    question: "料金体系について：書類作成にあたる作業を「コンサル料」「システム利用料」「アドバイス料」など別名目で請求していませんか？",
+    options: [
+      "明確に分けていない・別名目で請求している",
+      "書類作成は行政書士に外注し、料金も区別している",
+      "そもそも書類作成業務は行っていない",
     ],
   },
   {
@@ -183,6 +200,10 @@ export default function DiagnosisPage() {
             記事を読む
           </Link>
         </div>
+
+        <p className="text-xs text-gray-400 leading-relaxed px-1 pt-2 border-t border-gray-100">
+          ※ {DIAGNOSIS_DISCLAIMER}
+        </p>
       </div>
       </div>
     );
@@ -227,6 +248,10 @@ export default function DiagnosisPage() {
       </div>
 
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+      <p className="text-xs text-gray-400 leading-relaxed px-1">
+        ※ {DIAGNOSIS_DISCLAIMER}
+      </p>
     </div>
     </div>
   );
