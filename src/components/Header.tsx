@@ -9,8 +9,8 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50" style={{ borderTop: "5px solid #2563eb" }}>
-        <div className="max-w-4xl mx-auto px-4 py-2 sm:py-3 flex items-center justify-between">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50" style={{ borderTop: "5px solid #1e5da9" }}>
+        <div className="max-w-[1010px] mx-auto px-4 min-[1042px]:px-0 py-2 sm:py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 min-w-0" onClick={() => setOpen(false)}>
           <Image src="/logo.svg" alt="ロゴ" width={38} height={38} className="w-10 h-10 sm:w-[42px] sm:h-[42px]" />
             <div className="flex flex-col gap-2.5">
@@ -22,9 +22,10 @@ export default function Header() {
           </Link>
 
           {/* PC nav */}
-          <nav className="hidden sm:flex gap-4 text-sm text-gray-600 shrink-0">
-            <Link href="/articles" className="hover:text-blue-600 transition-colors">記事一覧</Link>
-            <Link href="/diagnosis" className="hover:text-blue-600 transition-colors">コンプライアンス診断</Link>
+          <nav className="hidden sm:flex items-center gap-4 text-sm text-gray-600 shrink-0">
+            <Link href="/articles" className="transition-all hover:[color:#1e5da9] hover:font-bold">記事一覧</Link>
+            <span className="text-gray-300 select-none">|</span>
+            <Link href="/diagnosis" className="transition-all hover:[color:#1e5da9] hover:font-bold">コンプライアンス診断</Link>
           </nav>
 
           {/* ハンバーガーボタン（スマホのみ） */}

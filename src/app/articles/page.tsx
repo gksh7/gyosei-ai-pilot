@@ -40,7 +40,7 @@ export default async function ArticlesPage({
   const totalPages = Math.ceil(total / PER_PAGE);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
       <div className="mb-5">
         <h1 className="text-xl font-bold text-gray-900 mb-1">記事一覧</h1>
         <p className="text-gray-600 text-sm">
@@ -72,7 +72,7 @@ export default async function ArticlesPage({
                     </span>
                   ))}
                 </div>
-                <h2 className="text-base font-semibold text-gray-900 mb-1.5 leading-snug">
+                <h2 className="text-base font-semibold text-gray-900 mt-3 mb-1.5 leading-snug">
                   {article.title}
                 </h2>
                 {article.summary && (

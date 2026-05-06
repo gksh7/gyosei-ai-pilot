@@ -78,7 +78,7 @@ export default async function ArticlePage({
   const sources = await getSources(article.source_ids ?? []);
 
   return (
-    <article className="max-w-4xl mx-auto px-4 py-8">
+    <article className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
       <div className="mb-6">
         <div className="flex gap-2 mb-4 flex-wrap">
           {article.tags?.map((tag: string) => (

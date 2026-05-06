@@ -25,15 +25,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* MV テキストエリア：SP版は黒ぼかし縁で可読性向上 */
+@media (max-width: 639px) {
+  .mv-text p,
+  .mv-text h2 {
+    text-shadow:
+      0 0 4px rgba(0,0,0,1),
+      0 0 10px rgba(0,0,0,0.9),
+      0 0 20px rgba(0,0,0,0.8),
+      0 2px 4px rgba(0,0,0,1);
+  }
+}
+
 .diagnosis-btn {
-  background: linear-gradient(135deg, #f5c842 0%, #e8991a 50%, #d4770a 100%);
-  color: #3d1f00 !important;
-  box-shadow: 0 4px 12px rgba(212, 119, 10, 0.55), 0 1px 3px rgba(0,0,0,0.25);
-  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+  background: linear-gradient(to right, #7c6323 0%, #b8922e 20%, #e0c45a 50%, #b8922e 80%, #7c6323 100%);
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(124, 99, 35, 0.65), 0 1px 3px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 .diagnosis-btn:hover {
-  background: linear-gradient(135deg, #fad454 0%, #f0a820 50%, #dc8810 100%);
-  box-shadow: 0 6px 18px rgba(212, 119, 10, 0.7), 0 2px 6px rgba(0,0,0,0.3);
+  background: linear-gradient(to right, #8a6e28 0%, #c9a03a 20%, #edd468 50%, #c9a03a 80%, #8a6e28 100%);
+  box-shadow: 0 6px 20px rgba(124, 99, 35, 0.8), 0 2px 6px rgba(0,0,0,0.35);
 }
 
 .prose p, .prose li {
