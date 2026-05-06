@@ -1,6 +1,6 @@
 # Gyosei AI Pilot 仕様書
 
-*作成日：2026年5月5日 / 最終更新：2026年5月6日*
+*作成日：2026年5月5日 / 最終更新：2026年5月6日（手動投稿開始・Search Console登録・GA4 IP除外）*
 
 ---
 
@@ -95,10 +95,14 @@ Supabase
 - [x] SEOメタ・OGP設定
 - [x] GitHub Actions定時実行設定（GitHub Secrets設定済み）
 - [x] カスタムドメイン取得（gyosei-ai-pilot.com）・Vercel接続
-- [x] Google Analytics 4導入
+- [x] Google Analytics 4導入（IP除外設定済み）
 - [x] コンプライアンス診断ページ（/diagnosis）
 - [x] サイトマップ自動生成（/sitemap.xml・Next.js App Router自動生成・1時間キャッシュ）
-- [x] JSON-LD構造化データ（WebSite・ItemList・NewsArticle・WebPage）
+- [x] robots.txt設定（/api/除外）
+- [x] JSON-LD構造化データ（WebSite・ItemList・NewsArticle・WebPage・BreadcrumbList）
+- [x] パンくずリスト（全ページ・UI + JSON-LD）
+- [x] OGP画像・Twitter Card（全ページ）
+- [x] Google Search Console登録・所有権確認済み
 - [ ] X自動投稿（APIプランの課題あり・停止中）
 
 ### Phase 2：進化エンジン
@@ -146,17 +150,21 @@ Supabase
 | ユーザー名 | @GyoseiAIPilot |
 | 表示名 | 行政書士AI Pilot｜2026法改正ナビ |
 | API権限 | OAuth 1.0a / Read and Write |
-| 現状 | Free tierでは402エラーで投稿不可。Basic tier（$100/月）が必要。現在は停止中。 |
+| 現状 | Free tierでは自動投稿（API）不可。手動投稿を2026年5月6日より開始。 |
 
 ---
 
 ## 8. SEO設計
 
 - `generateMetadata`：各記事ページのタイトル・description・OGP ✅
-- Google Analytics 4：アクセス計測 ✅
+- OGP画像・Twitter Card（summary_large_image）：全ページ ✅
+- パンくずリスト：全ページ（UI表示 + BreadcrumbList JSON-LD）✅
+- Google Analytics 4：アクセス計測・自社IP除外設定済み ✅
+- Google Search Console：登録・所有権確認済み・サイトマップ送信済み ✅
 - サイトマップ（/sitemap.xml）：✅ 自動生成（静的3ページ + 全記事・1時間更新）
-- JSON-LD構造化データ：✅ 実装済み（WebSite・CollectionPage・ItemList・NewsArticle・WebPage）
-- 記事生成時にClaudeが同時生成：SEOタイトル・メタdescription・タグ ✅
+- robots.txt：✅ 全クローラー許可・/api/除外
+- JSON-LD構造化データ：✅ 実装済み（WebSite・CollectionPage・ItemList・NewsArticle・WebPage・BreadcrumbList）
+- 記事生成時にClaudeが同時生成：SEOタイトル・メタdescription・タグ・ビッグワード ✅
 
 ---
 
