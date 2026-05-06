@@ -5,6 +5,8 @@ import Link from "next/link";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
 
+const OGP_IMAGE = `${SITE_URL}/ogp.png`;
+
 export const metadata: Metadata = {
   title: "行政書士AI Pilot｜2026法改正コンプライアンスナビ",
   description:
@@ -14,6 +16,16 @@ export const metadata: Metadata = {
     description:
       "2026年改正行政書士法への対応をAIがサポート。官公庁の最新情報を毎日収集・解説し、無料コンプライアンス診断も提供します。",
     type: "website",
+    url: SITE_URL,
+    siteName: "行政書士AI Pilot｜2026法改正ナビ",
+    images: [{ url: OGP_IMAGE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "行政書士AI Pilot｜2026法改正コンプライアンスナビ",
+    description:
+      "2026年改正行政書士法への対応をAIがサポート。官公庁の最新情報を毎日収集・解説し、無料コンプライアンス診断も提供します。",
+    images: [OGP_IMAGE],
   },
 };
 
@@ -180,9 +192,9 @@ export default async function HomePage({
                       {article.summary}
                     </p>
                   )}
-                  <p className="text-xs text-gray-400 mt-2">
+                  <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
                     {formatDate(article.created_at)}
-                  </p>
+                  </time>
                 </Link>
               ))}
             </div>

@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import type { Article, Source } from "@/lib/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const revalidate = 3600;
 
@@ -29,6 +30,8 @@ async function getSources(sourceIds: string[]): Promise<SourceSummary[]> {
   return (data as SourceSummary[]) ?? [];
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
+
 export async function generateMetadata({
   params,
 }: {
@@ -40,19 +43,30 @@ export async function generateMetadata({
 
   const title = article.seo_title ?? article.title;
   const description = article.seo_description ?? article.summary ?? undefined;
-  const url = `${process.env.NEXT_PUBLIC_SITE_URL}/articles/${slug}`;
+  const url = `${SITE_URL}/articles/${slug}`;
+  const images = article.og_image_url ? [{ url: article.og_image_url }] : [];
 
   return {
     title,
     description,
+    keywords: article.tags ?? undefined,
     alternates: { canonical: url },
     openGraph: {
       title,
       description,
       type: "article",
       publishedTime: article.created_at,
+      modifiedTime: article.updated_at,
+      tags: article.tags ?? undefined,
       url,
       siteName: "行政書士AI Pilot｜2026法改正ナビ",
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images,
     },
   };
 }
@@ -77,8 +91,7 @@ export default async function ArticlePage({
 
   const sources = await getSources(article.source_ids ?? []);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
-  const articleUrl = `${siteUrl}/articles/${article.slug}`;
+  const articleUrl = `${SITE_URL}/articles/${article.slug}`;
 
   const newsArticleJsonLd = {
     "@context": "https://schema.org",
@@ -93,13 +106,26 @@ export default async function ArticlePage({
     publisher: {
       "@type": "Organization",
       name: "行政書士AI Pilot｜2026法改正ナビ",
-      url: siteUrl,
+      url: SITE_URL,
     },
+    ...(article.og_image_url && { image: article.og_image_url }),
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "記事一覧", item: `${SITE_URL}/articles` },
+      { "@type": "ListItem", position: 3, name: article.title, item: articleUrl },
+    ],
   };
 
   return (
-    <article className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
+    <article className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <Breadcrumb items={[{ label: "ホーム", href: "/" }, { label: "記事一覧", href: "/articles" }, { label: article.title }]} />
       <div className="mb-6">
         <div className="flex gap-2 mb-4 flex-wrap">
           {article.tags?.map((tag: string) => (
@@ -114,7 +140,9 @@ export default async function ArticlePage({
         <h1 className="text-2xl font-bold text-gray-900 leading-snug mb-3">
           {article.title}
         </h1>
-        <p className="text-sm text-gray-400">{formatDate(article.created_at)}</p>
+        <time dateTime={article.created_at} className="text-sm text-gray-400">
+          {formatDate(article.created_at)}
+        </time>
       </div>
 
       {article.summary && (

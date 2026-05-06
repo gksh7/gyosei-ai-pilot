@@ -97,7 +97,7 @@ Supabase
 - [x] カスタムドメイン取得（gyosei-ai-pilot.com）・Vercel接続
 - [x] Google Analytics 4導入
 - [x] コンプライアンス診断ページ（/diagnosis）
-- [ ] サイトマップ自動生成（/sitemap.xml）
+- [x] サイトマップ自動生成（/sitemap.xml・Next.js App Router自動生成・1時間キャッシュ）
 - [x] JSON-LD構造化データ（WebSite・ItemList・NewsArticle・WebPage）
 - [ ] X自動投稿（APIプランの課題あり・停止中）
 
@@ -154,7 +154,7 @@ Supabase
 
 - `generateMetadata`：各記事ページのタイトル・description・OGP ✅
 - Google Analytics 4：アクセス計測 ✅
-- サイトマップ（/sitemap.xml）：未実装
+- サイトマップ（/sitemap.xml）：✅ 自動生成（静的3ページ + 全記事・1時間更新）
 - JSON-LD構造化データ：✅ 実装済み（WebSite・CollectionPage・ItemList・NewsArticle・WebPage）
 - 記事生成時にClaudeが同時生成：SEOタイトル・メタdescription・タグ ✅
 

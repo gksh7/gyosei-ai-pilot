@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 import { DIAGNOSIS_DISCLAIMER } from "@/lib/gyosei-law";
 
 const QUESTIONS = [
@@ -209,20 +210,33 @@ export default function DiagnosisPage() {
     );
   }
 
+  const SITE_URL = "https://gyosei-ai-pilot.com";
+
   const webPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "コンプライアンス診断｜行政書士AI Pilot",
-    url: "https://gyosei-ai-pilot.com/diagnosis",
+    url: `${SITE_URL}/diagnosis`,
     description:
       "2026年改正行政書士法への対応状況をAIが無料で診断。コンサル・人材・通信教育企業の「知らずに違反」リスクを7問でチェック。",
-    isPartOf: { "@type": "WebSite", url: "https://gyosei-ai-pilot.com" },
+    isPartOf: { "@type": "WebSite", url: SITE_URL },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "コンプライアンス診断", item: `${SITE_URL}/diagnosis` },
+    ],
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 pt-4 pb-8 sm:pt-8">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <div className="max-w-lg mx-auto space-y-6">
+      <Breadcrumb items={[{ label: "ホーム", href: "/" }, { label: "コンプライアンス診断" }]} />
       <div>
         <h1 className="text-xl font-bold text-gray-900 mb-1">コンプライアンス診断</h1>
         <p className="text-gray-500 text-sm">2026年改正行政書士法への対応状況をAIが診断します</p>

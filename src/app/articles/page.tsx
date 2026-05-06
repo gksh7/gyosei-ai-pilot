@@ -1,8 +1,32 @@
 import { supabase } from "@/lib/supabase";
 import type { Article } from "@/lib/types";
+import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
+const OGP_IMAGE = `${SITE_URL}/ogp.png`;
+
+export const metadata: Metadata = {
+  title: "記事一覧｜行政書士AI Pilot",
+  description:
+    "2026年改正行政書士法に関する最新記事の一覧。官公庁情報をAIが毎日収集・解説。許認可申請・補助金・在留資格など実務に役立つコンプライアンス情報を掲載。",
+  alternates: { canonical: `${SITE_URL}/articles` },
+  openGraph: {
+    title: "記事一覧｜行政書士AI Pilot",
+    description: "2026年改正行政書士法に関する最新記事。AIが官公庁情報を毎日収集・解説します。",
+    type: "website",
+    url: `${SITE_URL}/articles`,
+    siteName: "行政書士AI Pilot｜2026法改正ナビ",
+    images: [{ url: OGP_IMAGE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "記事一覧｜行政書士AI Pilot",
+    description: "2026年改正行政書士法に関する最新記事。AIが官公庁情報を毎日収集・解説します。",
+    images: [OGP_IMAGE],
+  },
+};
 
 export const revalidate = 3600;
 
@@ -41,6 +65,15 @@ export default async function ArticlesPage({
   const { articles, total } = await getArticles(page);
   const totalPages = Math.ceil(total / PER_PAGE);
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "記事一覧", item: `${SITE_URL}/articles` },
+    ],
+  };
+
   const collectionPageJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -64,9 +97,11 @@ export default async function ArticlesPage({
   };
 
   return (
-    <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
+    <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+      <Breadcrumb items={[{ label: "ホーム", href: "/" }, { label: "記事一覧" }]} />
       <div className="mb-5">
         <h1 className="text-xl font-bold text-gray-900 mb-1">記事一覧</h1>
         <p className="text-gray-600 text-sm">
@@ -106,9 +141,9 @@ export default async function ArticlesPage({
                     {article.summary}
                   </p>
                 )}
-                <p className="text-xs text-gray-400 mt-2">
+                <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
                   {formatDate(article.created_at)}
-                </p>
+                </time>
               </Link>
             ))}
           </div>
