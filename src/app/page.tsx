@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "行政書士AI Pilot｜2026法改正コンプライアンスナビ",
   description:
     "2026年改正行政書士法（無資格代行の厳罰化）に対応するためのAI法務メディア。コンサル・人材・通信教育企業の「知らずに違反」を防ぐ最新情報を毎日配信。無料コンプライアンス診断も提供。",
+  alternates: { canonical: SITE_URL },
   openGraph: {
     title: "行政書士AI Pilot｜2026法改正コンプライアンスナビ",
     description:
