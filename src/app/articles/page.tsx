@@ -104,7 +104,7 @@ export default async function ArticlesPage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <Breadcrumb items={[{ label: "ホーム", href: "/" }, { label: "記事一覧" }]} />
       <div className="mb-5">
-        <h1 className="text-xl font-bold text-gray-900 mb-1">記事一覧</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">記事一覧</h1>
         <p className="text-gray-600 text-sm">
           AIが官公庁・法律ニュースを毎日収集・解説します
         </p>

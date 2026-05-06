@@ -238,7 +238,7 @@ export default function DiagnosisPage() {
     <div className="max-w-lg mx-auto space-y-6">
       <Breadcrumb items={[{ label: "ホーム", href: "/" }, { label: "コンプライアンス診断" }]} />
       <div>
-        <h1 className="text-xl font-bold text-gray-900 mb-1">コンプライアンス診断</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">コンプライアンス診断</h1>
         <p className="text-gray-500 text-sm">2026年改正行政書士法への対応状況をAIが診断します</p>
       </div>
 
@@ -264,7 +264,7 @@ export default function DiagnosisPage() {
             <button
               key={option}
               onClick={() => handleSelect(option)}
-              className="w-full text-left px-4 py-3 text-sm text-gray-700 bg-gray-50 rounded-lg hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 border border-transparent transition-all"
+              className="w-full text-left px-4 py-3 text-sm text-gray-700 bg-gray-100 rounded-lg border border-gray-300 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-400 shadow-sm transition-all"
             >
               {option}
             </button>
