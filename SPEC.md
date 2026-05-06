@@ -1,6 +1,6 @@
 # Gyosei AI Pilot 仕様書
 
-*作成日：2026年5月5日 / 最終更新：2026年5月5日*
+*作成日：2026年5月5日 / 最終更新：2026年5月6日*
 
 ---
 
@@ -98,6 +98,7 @@ Supabase
 - [x] Google Analytics 4導入
 - [x] コンプライアンス診断ページ（/diagnosis）
 - [ ] サイトマップ自動生成（/sitemap.xml）
+- [x] JSON-LD構造化データ（WebSite・ItemList・NewsArticle・WebPage）
 - [ ] X自動投稿（APIプランの課題あり・停止中）
 
 ### Phase 2：進化エンジン
@@ -154,7 +155,7 @@ Supabase
 - `generateMetadata`：各記事ページのタイトル・description・OGP ✅
 - Google Analytics 4：アクセス計測 ✅
 - サイトマップ（/sitemap.xml）：未実装
-- JSON-LD構造化データ：未実装
+- JSON-LD構造化データ：✅ 実装済み（WebSite・CollectionPage・ItemList・NewsArticle・WebPage）
 - 記事生成時にClaudeが同時生成：SEOタイトル・メタdescription・タグ ✅
 
 ---

@@ -3,6 +3,8 @@ import type { Article } from "@/lib/types";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
+
 export const metadata: Metadata = {
   title: "行政書士AI Pilot｜2026法改正コンプライアンスナビ",
   description:
@@ -52,8 +54,32 @@ export default async function HomePage({
   const { articles, total } = await getArticles(page);
   const totalPages = Math.ceil(total / PER_PAGE);
 
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "行政書士AI Pilot｜2026法改正ナビ",
+    url: SITE_URL,
+    description:
+      "2026年改正行政書士法（無資格代行の厳罰化）に対応するためのAI法務メディア。コンサル・人材・通信教育企業の法務リスクを毎日配信。",
+  };
+
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "最新記事",
+    url: SITE_URL,
+    itemListElement: articles.map((article, i) => ({
+      "@type": "ListItem",
+      position: (page - 1) * PER_PAGE + i + 1,
+      name: article.title,
+      url: `${SITE_URL}/articles/${article.slug}`,
+    })),
+  };
+
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       {/* コンプライアンス診断バナー（フルワイド） */}
       <div
         className="relative overflow-hidden text-white"

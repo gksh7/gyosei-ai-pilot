@@ -77,8 +77,29 @@ export default async function ArticlePage({
 
   const sources = await getSources(article.source_ids ?? []);
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
+  const articleUrl = `${siteUrl}/articles/${article.slug}`;
+
+  const newsArticleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.seo_description ?? article.summary ?? undefined,
+    datePublished: article.created_at,
+    dateModified: article.updated_at,
+    url: articleUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    author: { "@type": "Organization", name: "行政書士AI Pilot" },
+    publisher: {
+      "@type": "Organization",
+      name: "行政書士AI Pilot｜2026法改正ナビ",
+      url: siteUrl,
+    },
+  };
+
   return (
     <article className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }} />
       <div className="mb-6">
         <div className="flex gap-2 mb-4 flex-wrap">
           {article.tags?.map((tag: string) => (

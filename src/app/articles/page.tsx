@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabase";
 import type { Article } from "@/lib/types";
 import Link from "next/link";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
+
 export const revalidate = 3600;
 
 const PER_PAGE = 10;
@@ -39,8 +41,32 @@ export default async function ArticlesPage({
   const { articles, total } = await getArticles(page);
   const totalPages = Math.ceil(total / PER_PAGE);
 
+  const collectionPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "記事一覧｜行政書士AI Pilot",
+    url: `${SITE_URL}/articles`,
+    description: "2026年改正行政書士法に関するAI生成記事の一覧。官公庁の最新情報を毎日収集・解説します。",
+    isPartOf: { "@type": "WebSite", url: SITE_URL },
+  };
+
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "記事一覧",
+    url: `${SITE_URL}/articles`,
+    itemListElement: articles.map((article, i) => ({
+      "@type": "ListItem",
+      position: (page - 1) * PER_PAGE + i + 1,
+      name: article.title,
+      url: `${SITE_URL}/articles/${article.slug}`,
+    })),
+  };
+
   return (
     <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       <div className="mb-5">
         <h1 className="text-xl font-bold text-gray-900 mb-1">記事一覧</h1>
         <p className="text-gray-600 text-sm">

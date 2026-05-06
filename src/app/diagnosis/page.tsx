@@ -209,8 +209,19 @@ export default function DiagnosisPage() {
     );
   }
 
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "コンプライアンス診断｜行政書士AI Pilot",
+    url: "https://gyosei-ai-pilot.com/diagnosis",
+    description:
+      "2026年改正行政書士法への対応状況をAIが無料で診断。コンサル・人材・通信教育企業の「知らずに違反」リスクを7問でチェック。",
+    isPartOf: { "@type": "WebSite", url: "https://gyosei-ai-pilot.com" },
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
     <div className="max-w-lg mx-auto space-y-6">
       <div>
         <h1 className="text-xl font-bold text-gray-900 mb-1">コンプライアンス診断</h1>
