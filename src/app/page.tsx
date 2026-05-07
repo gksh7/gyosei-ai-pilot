@@ -128,7 +128,7 @@ export default async function HomePage({
         {/* テキスト・ボタン（1010px中央揃えコンテナの左50%） */}
         <div className="relative mx-auto" style={{ maxWidth: "1010px", minHeight: "375px" }}>
           <div className="mv-text flex flex-col justify-center sm:block px-6 sm:py-14 [@media(min-width:1042px)]:px-0 [@media(min-width:851px)]:max-w-[50%] [@media(min-width:768px)_and_(max-width:850px)]:max-w-[60%]" style={{ minHeight: "375px" }}>
-            <p className="text-blue-200 text-[15px] sm:text-lg font-medium mb-1">無料・即時診断</p>
+            <p className="text-blue-200 text-[17px] sm:text-lg font-medium mb-1">無料・即時診断</p>
             <h2 className="text-[28px] sm:text-[34px] font-bold mb-3 sm:leading-tight">
               あなたの会社は大丈夫？
             </h2>
@@ -153,7 +153,7 @@ export default async function HomePage({
       <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
       <div>
         <div className="mb-5">
-          <h1 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-5">
+          <h1 className="text-2xl [@media(min-width:1024px)]:text-3xl font-bold text-gray-900 mb-5">
             2026年改正行政書士法｜最新コンプライアンス情報
           </h1>
           <h2 className="text-base font-semibold text-gray-700 mb-1">最新記事</h2>
