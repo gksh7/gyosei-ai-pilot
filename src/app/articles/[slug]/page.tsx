@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import type { Article, Source } from "@/lib/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const revalidate = 3600;
@@ -28,6 +29,30 @@ async function getSources(sourceIds: string[]): Promise<SourceSummary[]> {
     .in("id", sourceIds)
     .order("tier");
   return (data as SourceSummary[]) ?? [];
+}
+
+type AdjacentArticle = Pick<Article, "slug" | "title">;
+
+async function getAdjacentArticles(createdAt: string): Promise<{ prev: AdjacentArticle | null; next: AdjacentArticle | null }> {
+  const [{ data: prevData }, { data: nextData }] = await Promise.all([
+    supabase
+      .from("articles")
+      .select("slug, title")
+      .eq("status", "published")
+      .lt("created_at", createdAt)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single(),
+    supabase
+      .from("articles")
+      .select("slug, title")
+      .eq("status", "published")
+      .gt("created_at", createdAt)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .single(),
+  ]);
+  return { prev: prevData ?? null, next: nextData ?? null };
 }
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
@@ -90,7 +115,10 @@ export default async function ArticlePage({
 
   if (!article) notFound();
 
-  const sources = await getSources(article.source_ids ?? []);
+  const [sources, { prev, next }] = await Promise.all([
+    getSources(article.source_ids ?? []),
+    getAdjacentArticles(article.created_at),
+  ]);
 
   const articleUrl = `${SITE_URL}/articles/${article.slug}`;
 
@@ -175,6 +203,33 @@ export default async function ArticlePage({
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {(prev || next) && (
+        <div className="mt-10 pt-6 border-t border-gray-200 grid grid-cols-2 gap-3">
+          <div>
+            {prev && (
+              <Link
+                href={`/articles/${prev.slug}`}
+                className="flex flex-col gap-1 p-4 bg-white border border-gray-300 rounded-xl hover:border-blue-400 hover:shadow-sm transition-all h-full"
+              >
+                <span className="text-xs text-gray-400">← 前の記事</span>
+                <span className="text-sm font-medium text-gray-700 leading-snug line-clamp-2">{prev.title}</span>
+              </Link>
+            )}
+          </div>
+          <div>
+            {next && (
+              <Link
+                href={`/articles/${next.slug}`}
+                className="flex flex-col gap-1 p-4 bg-white border border-gray-300 rounded-xl hover:border-blue-400 hover:shadow-sm transition-all text-right h-full"
+              >
+                <span className="text-xs text-gray-400">次の記事 →</span>
+                <span className="text-sm font-medium text-gray-700 leading-snug line-clamp-2">{next.title}</span>
+              </Link>
+            )}
+          </div>
         </div>
       )}
     </article>
