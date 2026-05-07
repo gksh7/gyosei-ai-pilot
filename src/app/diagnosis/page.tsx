@@ -236,7 +236,7 @@ export default function DiagnosisPage() {
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <div className="max-w-lg mx-auto space-y-6">
-      <Breadcrumb items={[{ label: "ホーム", href: "/" }, { label: "コンプライアンス診断" }]} />
+      <Breadcrumb items={[{ label: "トップ", href: "/" }, { label: "コンプライアンス診断" }]} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-1">コンプライアンス診断</h1>
         <p className="text-gray-500 text-sm">2026年改正行政書士法への対応状況をAIが診断します</p>

@@ -46,7 +46,7 @@ export default function ContactPage() {
         <div className="max-w-lg mx-auto space-y-6">
           <Breadcrumb
             items={[
-              { label: "ホーム", href: "/" },
+              { label: "トップ", href: "/" },
               { label: "お問い合わせ" },
             ]}
           />

@@ -154,7 +154,7 @@ export default async function ArticlePage({
     <article className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <Breadcrumb items={[{ label: "ホーム", href: "/" }, { label: "記事一覧", href: "/articles" }, { label: article.title }]} />
+      <Breadcrumb items={[{ label: "トップ", href: "/" }, { label: "記事一覧", href: "/articles" }, { label: article.title }]} />
       <div className="mb-6">
         <div className="flex gap-2 mb-4 flex-wrap">
           {article.tags?.map((tag: string) => (

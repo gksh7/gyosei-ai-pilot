@@ -44,7 +44,7 @@ export default function PrivacyPage() {
       <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
         <Breadcrumb
           items={[
-            { label: "ホーム", href: "/" },
+            { label: "トップ", href: "/" },
             { label: "プライバシーポリシー" },
           ]}
         />
