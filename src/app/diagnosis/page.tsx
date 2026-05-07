@@ -163,7 +163,7 @@ export default function DiagnosisPage() {
           <p className="text-gray-600 text-sm leading-relaxed">{result.message}</p>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white rounded-xl border border-gray-300 p-5">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">⚠️ 確認が必要なポイント</h3>
           <ul className="space-y-2">
             {result.issues.map((issue, i) => (
@@ -175,7 +175,7 @@ export default function DiagnosisPage() {
           </ul>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white rounded-xl border border-gray-300 p-5">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">✅ 推奨アクション</h3>
           <ul className="space-y-2">
             {result.actions.map((action, i) => (
@@ -190,7 +190,7 @@ export default function DiagnosisPage() {
         <div className="flex gap-3">
           <button
             onClick={handleReset}
-            className="flex-1 py-3 text-sm text-gray-600 bg-white border border-gray-200 rounded-xl hover:border-blue-300 transition-colors"
+            className="flex-1 py-3 text-sm text-gray-600 bg-white border border-gray-300 rounded-xl hover:border-blue-300 transition-colors"
           >
             もう一度診断する
           </button>
@@ -257,14 +257,14 @@ export default function DiagnosisPage() {
       </div>
 
       {/* 質問カード */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-300 p-6">
         <p className="text-base font-semibold text-gray-900 mb-5">{currentQ.question}</p>
         <div className="space-y-2.5">
           {currentQ.options.map((option) => (
             <button
               key={option}
               onClick={() => handleSelect(option)}
-              className="w-full text-left px-4 py-3 text-sm text-gray-700 bg-white rounded-lg border-2 border-blue-300 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-500 cursor-pointer shadow-sm transition-all"
+              className="w-full text-left px-4 py-3 text-sm text-blue-900 bg-blue-50 rounded-lg border border-blue-200 hover:bg-blue-100 hover:border-blue-400 cursor-pointer shadow-sm transition-all"
             >
               {option}
             </button>
