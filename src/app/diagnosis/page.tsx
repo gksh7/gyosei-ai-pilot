@@ -264,7 +264,7 @@ export default function DiagnosisPage() {
             <button
               key={option}
               onClick={() => handleSelect(option)}
-              className="w-full text-left px-4 py-3 text-sm text-gray-700 bg-gray-100 rounded-lg border border-gray-300 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-400 shadow-sm transition-all"
+              className="w-full text-left px-4 py-3 text-sm text-gray-700 bg-white rounded-lg border-2 border-blue-300 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-500 cursor-pointer shadow-sm transition-all"
             >
               {option}
             </button>

@@ -42,6 +42,17 @@ export default function RootLayout({
         </main>
         <footer className="border-t border-gray-200 mt-16">
           <div className="max-w-4xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
+            <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-4 text-xs">
+              <a href="/about" className="hover:text-gray-700 transition-colors">運営者情報</a>
+              <span className="text-gray-300 select-none">|</span>
+              <a href="/privacy" className="hover:text-gray-700 transition-colors">プライバシーポリシー</a>
+              <span className="text-gray-300 select-none">|</span>
+              <a href="/terms" className="hover:text-gray-700 transition-colors">利用規約</a>
+              <span className="text-gray-300 select-none">|</span>
+              <a href="/tokutei" className="hover:text-gray-700 transition-colors">特定商取引法</a>
+              <span className="text-gray-300 select-none">|</span>
+              <a href="/contact" className="hover:text-gray-700 transition-colors">お問い合わせ</a>
+            </nav>
             © 2026 行政書士AI Pilot
           </div>
         </footer>
