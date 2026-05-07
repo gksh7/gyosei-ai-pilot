@@ -122,7 +122,7 @@ export default async function ArticlesPage({
               <Link
                 key={article.id}
                 href={`/articles/${article.slug}`}
-                className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-300 hover:shadow-sm transition-all"
+                className="block bg-white rounded-xl border border-gray-300 p-5 hover:border-blue-400 hover:shadow-sm transition-all"
               >
                 <div className="flex gap-2 mb-2 flex-wrap">
                   {article.tags?.slice(0, 3).map((tag: string) => (
@@ -142,9 +142,12 @@ export default async function ArticlesPage({
                     {article.summary}
                   </p>
                 )}
-                <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
-                  {formatDate(article.created_at)}
-                </time>
+                <div className="flex items-center justify-between mt-2">
+                  <time dateTime={article.created_at} className="text-xs text-gray-400">
+                    {formatDate(article.created_at)}
+                  </time>
+                  <span className="text-xs text-blue-500 font-medium">続きを読む →</span>
+                </div>
               </Link>
             ))}
           </div>
