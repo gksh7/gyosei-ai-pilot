@@ -40,7 +40,7 @@ export default function RootLayout({
         <main>
           {children}
         </main>
-        <footer className="border-t border-gray-200 mt-16">
+        <footer className="border-t border-gray-200">
           <div className="max-w-4xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-4 text-xs">
               <a href="/about" className="hover:text-gray-700 transition-colors">運営者情報</a>
