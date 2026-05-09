@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import PageTracker from "./PageTracker";
 
 export const revalidate = 3600;
 
@@ -101,6 +102,7 @@ function formatDate(dateStr: string) {
   });
 }
 
+
 export default async function ArticlePage({
   params,
 }: {
@@ -150,6 +152,7 @@ export default async function ArticlePage({
     <article className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <PageTracker articleId={article.id} />
       <Breadcrumb items={[{ label: "トップ", href: "/" }, { label: "記事一覧", href: "/articles" }, { label: article.title }]} />
       <div className="mb-6">
         <div className="flex gap-2 mb-4 flex-wrap">

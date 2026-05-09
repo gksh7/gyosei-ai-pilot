@@ -22,9 +22,37 @@ async function run() {
     .limit(30)
   const recentTitles = (recentArticles ?? []).map((a: { title: string }) => a.title)
 
+  // 2b. 人気テーマを取得（直近30日のPV上位記事からタグを集計）
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+  const { data: topAnalytics } = await supabase
+    .from('analytics')
+    .select('article_id, page_views')
+    .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
+    .order('page_views', { ascending: false })
+    .limit(10)
+
+  let popularThemes: string[] = []
+  if (topAnalytics && topAnalytics.length > 0) {
+    const topIds = topAnalytics.map((a: { article_id: string }) => a.article_id)
+    const { data: topArticles } = await supabase
+      .from('articles')
+      .select('tags')
+      .in('id', topIds)
+    const tagCount: Record<string, number> = {}
+    ;(topArticles ?? []).forEach((a: { tags: string[] | null }) => {
+      ;(a.tags ?? []).forEach(tag => { tagCount[tag] = (tagCount[tag] ?? 0) + 1 })
+    })
+    popularThemes = Object.entries(tagCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([tag]) => tag)
+    if (popularThemes.length > 0) console.log(`📊 人気テーマ: ${popularThemes.join(', ')}`)
+  }
+
   // 3. 記事生成
   console.log('✍️ 記事生成中...')
-  const article = await generateArticle(scraped, recentTitles)
+  const article = await generateArticle(scraped, recentTitles, popularThemes)
   console.log(`記事生成完了: ${article.title}`)
 
   // 4. Supabaseに保存（参照元IDを含める）
