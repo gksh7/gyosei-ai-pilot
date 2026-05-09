@@ -43,7 +43,16 @@ async function getPopularArticles(limit = 4): Promise<Article[]> {
     .select("article_id, page_views")
     .gte("date", thirtyDaysAgo.toISOString().split("T")[0]);
 
-  if (!analytics || analytics.length === 0) return [];
+  if (!analytics || analytics.length === 0) {
+    // analyticsデータ蓄積前は最新記事をフォールバック表示
+    const { data } = await supabase
+      .from("articles")
+      .select("*")
+      .eq("status", "published")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    return data ?? [];
+  }
 
   const pvByArticle: Record<string, number> = {};
   analytics.forEach((row: { article_id: string; page_views: number }) => {
