@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og'
 import { createClient } from '@supabase/supabase-js'
-import { readFile } from 'node:fs/promises'
-import path from 'node:path'
 
 export const runtime = 'nodejs'
 export const alt = '行政書士AI Pilot｜2026法改正ナビ'
@@ -29,8 +27,9 @@ export default async function Image({
   const title = article?.title ?? '行政書士AI Pilot'
   const tags: string[] = article?.tags?.slice(0, 3) ?? []
 
-  const fontData = await readFile(
-    path.join(process.cwd(), 'src/app/articles/[slug]/NotoSansJP-Bold.woff2')
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://gyosei-ai-pilot.com'
+  const fontData = await fetch(`${siteUrl}/fonts/NotoSansJP-Bold.woff2`).then((res) =>
+    res.arrayBuffer()
   )
 
   const fontSize = title.length > 35 ? 40 : title.length > 20 ? 48 : 56
