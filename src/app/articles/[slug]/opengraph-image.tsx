@@ -20,12 +20,11 @@ export default async function Image({
 
   const { data: article } = await supabase
     .from('articles')
-    .select('title, tags')
+    .select('title')
     .eq('slug', slug)
     .single()
 
   const title = article?.title ?? '行政書士AI Pilot'
-  const tags: string[] = article?.tags?.slice(0, 3) ?? []
   const fontSize = title.length > 35 ? 40 : title.length > 20 ? 48 : 56
 
   return new ImageResponse(
@@ -46,28 +45,12 @@ export default async function Image({
           行政書士AI Pilot｜2026法改正ナビ
         </div>
 
-        <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 700, lineHeight: 1.5, flex: 1 }}>
+        <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 700, lineHeight: 1.5 }}>
           {title}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            {tags.map((tag) => (
-              <div
-                key={tag}
-                style={{
-                  backgroundColor: 'rgba(184, 146, 46, 0.2)',
-                  color: '#e0c45a',
-                  padding: '6px 14px',
-                  borderRadius: '4px',
-                  fontSize: '20px',
-                }}
-              >
-                #{tag}
-              </div>
-            ))}
-          </div>
-          <div style={{ color: '#64748b', fontSize: '20px' }}>gyosei-ai-pilot.com</div>
+        <div style={{ color: '#64748b', fontSize: '20px', marginTop: 'auto' }}>
+          gyosei-ai-pilot.com
         </div>
       </div>
     ),
