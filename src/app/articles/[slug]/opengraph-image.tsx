@@ -27,10 +27,17 @@ export default async function Image({
   const title = article?.title ?? '行政書士AI Pilot'
   const tags: string[] = article?.tags?.slice(0, 3) ?? []
 
-  // Noto Sans JP（日本語対応フォント）を読み込む
+  // Noto Sans JP（日本語対応フォント）を動的に取得
   const fontData = await fetch(
-    'https://fonts.gstatic.com/s/notosansjp/v53/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEj757.woff2'
-  ).then((res) => res.arrayBuffer())
+    'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap',
+    { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' } }
+  )
+    .then((res) => res.text())
+    .then((css) => {
+      const match = css.match(/src: url\((.+?)\) format\('woff2'\)/)
+      if (!match) throw new Error('Font URL not found')
+      return fetch(match[1]).then((res) => res.arrayBuffer())
+    })
 
   const fontSize = title.length > 35 ? 40 : title.length > 20 ? 48 : 56
 
