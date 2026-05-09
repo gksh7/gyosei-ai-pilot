@@ -42,7 +42,7 @@ export default async function Image({
         <div style={{ width: '72px', height: '4px', backgroundColor: '#b8922e', marginBottom: '28px' }} />
 
         <div style={{ color: '#b8922e', fontSize: '26px', fontWeight: 700, marginBottom: '32px' }}>
-          行政書士AI Pilot｜2026法改正ナビ
+          行政書士AI Pilot | 2026法改正ナビ
         </div>
 
         <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 700, lineHeight: 1.5 }}>
