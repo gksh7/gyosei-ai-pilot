@@ -204,8 +204,8 @@ export default async function HomePage({
           </h1>
 
           {popularArticles.length >= 2 && (
-            <div className="mb-8">
-              <h2 className="text-base font-semibold text-gray-700 mb-3">人気記事</h2>
+            <div className="mb-12">
+              <h2 className="text-lg font-bold text-gray-800 mb-3">人気記事</h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {popularArticles.map((article, i) => (
                   <Link
@@ -233,7 +233,7 @@ export default async function HomePage({
             </div>
           )}
 
-          <h2 className="text-base font-semibold text-gray-700 mb-1">最新記事</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-1">最新記事</h2>
           <p className="text-gray-600 text-sm">
             AIが官公庁・法律ニュースを毎日収集・解説します
           </p>
