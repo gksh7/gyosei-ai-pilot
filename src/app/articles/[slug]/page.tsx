@@ -69,8 +69,6 @@ export async function generateMetadata({
   const title = article.seo_title ?? article.title;
   const description = article.seo_description ?? article.summary ?? undefined;
   const url = `${SITE_URL}/articles/${slug}`;
-  const images = article.og_image_url ? [{ url: article.og_image_url }] : [];
-
   return {
     title,
     description,
@@ -85,13 +83,11 @@ export async function generateMetadata({
       tags: article.tags ?? undefined,
       url,
       siteName: "行政書士AI Pilot｜2026法改正ナビ",
-      images,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images,
     },
   };
 }
