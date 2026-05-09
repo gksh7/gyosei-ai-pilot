@@ -1,6 +1,4 @@
 import { ImageResponse } from 'next/og'
-import { readFile } from 'node:fs/promises'
-import path from 'node:path'
 
 export const runtime = 'nodejs'
 export const alt = '行政書士AI Pilot｜2026法改正ナビ'
@@ -8,9 +6,9 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 export default async function Image() {
-  const fontData = await readFile(
-    path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-Bold.woff2')
-  )
+  const fontData = await fetch(
+    'https://gyosei-ai-pilot.com/fonts/NotoSansJP-Bold.woff2'
+  ).then((res) => res.arrayBuffer())
 
   return new ImageResponse(
     (
