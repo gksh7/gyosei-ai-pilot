@@ -18,12 +18,11 @@ export default async function Image({
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
   )
 
-  const [{ data: article }, fontData] = await Promise.all([
-    supabase.from('articles').select('title, tags').eq('slug', slug).single(),
-    fetch(
-      'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/files/noto-sans-jp-japanese-700-normal.woff2'
-    ).then((res) => res.arrayBuffer()),
-  ])
+  const { data: article } = await supabase
+    .from('articles')
+    .select('title, tags')
+    .eq('slug', slug)
+    .single()
 
   const title = article?.title ?? '行政書士AI Pilot'
   const tags: string[] = article?.tags?.slice(0, 3) ?? []
@@ -39,7 +38,6 @@ export default async function Image({
           flexDirection: 'column',
           backgroundColor: '#0f172a',
           padding: '64px',
-          fontFamily: 'NotoSansJP',
         }}
       >
         <div style={{ width: '72px', height: '4px', backgroundColor: '#b8922e', marginBottom: '28px' }} />
@@ -73,9 +71,6 @@ export default async function Image({
         </div>
       </div>
     ),
-    {
-      ...size,
-      fonts: [{ name: 'NotoSansJP', data: fontData, weight: 700 }],
-    }
+    { ...size }
   )
 }
