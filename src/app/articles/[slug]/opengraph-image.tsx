@@ -1,7 +1,9 @@
 import { ImageResponse } from 'next/og'
 import { createClient } from '@supabase/supabase-js'
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 export const alt = '行政書士AI Pilot｜2026法改正ナビ'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
@@ -27,17 +29,9 @@ export default async function Image({
   const title = article?.title ?? '行政書士AI Pilot'
   const tags: string[] = article?.tags?.slice(0, 3) ?? []
 
-  // Noto Sans JP（日本語対応フォント）を動的に取得
-  const fontData = await fetch(
-    'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap',
-    { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' } }
+  const fontData = await readFile(
+    path.join(process.cwd(), 'src/app/articles/[slug]/NotoSansJP-Bold.woff2')
   )
-    .then((res) => res.text())
-    .then((css) => {
-      const match = css.match(/src: url\((.+?)\) format\('woff2'\)/)
-      if (!match) throw new Error('Font URL not found')
-      return fetch(match[1]).then((res) => res.arrayBuffer())
-    })
 
   const fontSize = title.length > 35 ? 40 : title.length > 20 ? 48 : 56
 
