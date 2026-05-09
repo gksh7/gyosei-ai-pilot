@@ -4,6 +4,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 export type ScrapedContent = { id: string; source: string; url: string; content: string }
 
+const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+
 export async function scrapeAll(supabase: SupabaseClient): Promise<ScrapedContent[]> {
   const { data: sources } = await supabase
     .from('sources')
@@ -18,9 +20,14 @@ export async function scrapeAll(supabase: SupabaseClient): Promise<ScrapedConten
   for (const source of sources) {
     try {
       console.log(`スクレイプ中: ${source.name} (${source.scrape_method})`)
-      const content = source.scrape_method === 'playwright'
-        ? await scrapeWithPlaywright(source.url, source.selector)
-        : await scrapeWithCheerio(source.url, source.selector)
+      let content: string
+      if (source.scrape_method === 'playwright') {
+        content = await scrapeWithPlaywright(source.url, source.selector)
+      } else if (source.scrape_method === 'rss') {
+        content = await scrapeWithRss(source.url)
+      } else {
+        content = await scrapeWithCheerio(source.url, source.selector)
+      }
 
       if (content.length > 100) {
         results.push({ id: source.id, source: source.name, url: source.url, content })
@@ -40,8 +47,8 @@ export async function scrapeAll(supabase: SupabaseClient): Promise<ScrapedConten
 
 async function scrapeWithCheerio(url: string, selector?: string): Promise<string> {
   const { data: html } = await axios.get(url, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; LegalAIPilot/1.0; +https://gyosei-ai-pilot.vercel.app)' },
-    timeout: 15000,
+    headers: { 'User-Agent': BROWSER_UA },
+    timeout: 30000,
   })
   const $ = cheerio.load(html)
   $('script, style, nav, footer, iframe, .ad, #ad').remove()
@@ -49,6 +56,23 @@ async function scrapeWithCheerio(url: string, selector?: string): Promise<string
     ? $(selector)
     : $('main, article, .content, #content, .news-list, .press-release, body')
   return target.text().replace(/\s+/g, ' ').trim().slice(0, 3000)
+}
+
+async function scrapeWithRss(url: string): Promise<string> {
+  const { data: xml } = await axios.get(url, {
+    headers: { 'User-Agent': BROWSER_UA },
+    timeout: 15000,
+    responseType: 'text',
+  })
+  const $ = cheerio.load(xml, { xmlMode: true })
+  const items: string[] = []
+  $('item').each((_, el) => {
+    const title = $(el).find('title').text().replace(/<!\[CDATA\[|\]\]>/g, '').trim()
+    const description = $(el).find('description').text().replace(/<!\[CDATA\[|\]\]>/g, '').trim()
+    const pubDate = $(el).find('pubDate').text().trim()
+    if (title) items.push([pubDate, title, description].filter(Boolean).join(' | '))
+  })
+  return items.slice(0, 20).join('\n').slice(0, 3000)
 }
 
 async function scrapeWithPlaywright(url: string, selector?: string): Promise<string> {
