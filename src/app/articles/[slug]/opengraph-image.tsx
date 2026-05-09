@@ -18,13 +18,16 @@ export default async function Image({
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
   )
 
-  const { data: article } = await supabase
-    .from('articles')
-    .select('title')
-    .eq('slug', slug)
-    .single()
+  const [{ data: article }, fontData] = await Promise.all([
+    supabase.from('articles').select('title, tags').eq('slug', slug).single(),
+    fetch(
+      'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/files/noto-sans-jp-japanese-700-normal.woff2'
+    ).then((res) => res.arrayBuffer()),
+  ])
 
-  const title = article?.title ?? 'Supabase NG'
+  const title = article?.title ?? '行政書士AI Pilot'
+  const tags: string[] = article?.tags?.slice(0, 3) ?? []
+  const fontSize = title.length > 35 ? 40 : title.length > 20 ? 48 : 56
 
   return new ImageResponse(
     (
@@ -33,17 +36,46 @@ export default async function Image({
           width: '100%',
           height: '100%',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          flexDirection: 'column',
           backgroundColor: '#0f172a',
-          color: '#ffffff',
-          fontSize: '36px',
-          padding: '40px',
+          padding: '64px',
+          fontFamily: 'NotoSansJP',
         }}
       >
-        {title}
+        <div style={{ width: '72px', height: '4px', backgroundColor: '#b8922e', marginBottom: '28px' }} />
+
+        <div style={{ color: '#b8922e', fontSize: '26px', fontWeight: 700, marginBottom: '32px' }}>
+          行政書士AI Pilot｜2026法改正ナビ
+        </div>
+
+        <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 700, lineHeight: 1.5, flex: 1 }}>
+          {title}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {tags.map((tag) => (
+              <div
+                key={tag}
+                style={{
+                  backgroundColor: 'rgba(184, 146, 46, 0.2)',
+                  color: '#e0c45a',
+                  padding: '6px 14px',
+                  borderRadius: '4px',
+                  fontSize: '20px',
+                }}
+              >
+                #{tag}
+              </div>
+            ))}
+          </div>
+          <div style={{ color: '#64748b', fontSize: '20px' }}>gyosei-ai-pilot.com</div>
+        </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [{ name: 'NotoSansJP', data: fontData, weight: 700 }],
+    }
   )
 }
