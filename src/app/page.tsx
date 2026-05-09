@@ -34,6 +34,40 @@ export const revalidate = 3600;
 
 const PER_PAGE = 10;
 
+async function getPopularArticles(limit = 4): Promise<Article[]> {
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  const { data: analytics } = await supabase
+    .from("analytics")
+    .select("article_id, page_views")
+    .gte("date", thirtyDaysAgo.toISOString().split("T")[0]);
+
+  if (!analytics || analytics.length === 0) return [];
+
+  const pvByArticle: Record<string, number> = {};
+  analytics.forEach((row: { article_id: string; page_views: number }) => {
+    pvByArticle[row.article_id] = (pvByArticle[row.article_id] ?? 0) + row.page_views;
+  });
+
+  const topIds = Object.entries(pvByArticle)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([id]) => id);
+
+  if (topIds.length === 0) return [];
+
+  const { data: articles } = await supabase
+    .from("articles")
+    .select("*")
+    .in("id", topIds)
+    .eq("status", "published");
+
+  return (articles ?? []).sort(
+    (a: Article, b: Article) => (pvByArticle[b.id] ?? 0) - (pvByArticle[a.id] ?? 0)
+  );
+}
+
 async function getArticles(page: number): Promise<{ articles: Article[]; total: number }> {
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
@@ -65,7 +99,10 @@ export default async function HomePage({
 }) {
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10));
-  const { articles, total } = await getArticles(page);
+  const [{ articles, total }, popularArticles] = await Promise.all([
+    getArticles(page),
+    getPopularArticles(),
+  ]);
   const totalPages = Math.ceil(total / PER_PAGE);
 
   const websiteJsonLd = {
@@ -156,6 +193,37 @@ export default async function HomePage({
           <h1 className="text-2xl [@media(min-width:1024px)]:text-3xl font-bold text-gray-900 mb-5">
             2026年改正行政書士法｜最新コンプライアンス情報
           </h1>
+
+          {popularArticles.length >= 2 && (
+            <div className="mb-8">
+              <h2 className="text-base font-semibold text-gray-700 mb-3">人気記事</h2>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                {popularArticles.map((article, i) => (
+                  <Link
+                    key={article.id}
+                    href={`/articles/${article.slug}`}
+                    className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm transition-all"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-base font-bold text-blue-500 leading-none">{i + 1}</span>
+                      {article.tags?.[0] && (
+                        <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full truncate">
+                          #{article.tags[0]}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-3">
+                      {article.title}
+                    </h3>
+                    <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
+                      {formatDate(article.created_at)}
+                    </time>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           <h2 className="text-base font-semibold text-gray-700 mb-1">最新記事</h2>
           <p className="text-gray-600 text-sm">
             AIが官公庁・法律ニュースを毎日収集・解説します
