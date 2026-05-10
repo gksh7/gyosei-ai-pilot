@@ -199,49 +199,52 @@ export default async function HomePage({
         </div>
       </div>
 
-      {/* 記事一覧（コンテナ内） */}
-      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8 lg:pt-16">
-      <div>
-        <div className="mb-5">
-          <h1 className="text-2xl [@media(min-width:1024px)]:text-3xl font-bold text-gray-900 mb-6 lg:mb-8">
-            2026年改正行政書士法｜最新コンプライアンス情報
-          </h1>
+      {/* h1 */}
+      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-8 lg:pt-16">
+        <h1 className="text-2xl [@media(min-width:1024px)]:text-3xl font-bold text-gray-900 mb-6 lg:mb-8">
+          2026年改正行政書士法｜最新コンプライアンス情報
+        </h1>
+      </div>
 
-          {popularArticles.length >= 2 && (
-            <div className="mb-12 rounded-xl p-4 lg:px-8" style={{ backgroundColor: 'rgba(12, 36, 97, 0.05)' }}>
-              <h2 className="text-lg font-bold text-gray-800 mb-3">人気記事</h2>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                {popularArticles.map((article, i) => (
-                  <Link
-                    key={article.id}
-                    href={`/articles/${article.slug}`}
-                    className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm transition-all"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-base font-bold text-blue-500 leading-none">{i + 1}</span>
-                      {article.tags?.[0] && (
-                        <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full truncate">
-                          #{article.tags[0]}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-3">
-                      {article.title}
-                    </h3>
-                    <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
-                      {formatDate(article.created_at)}
-                    </time>
-                  </Link>
-                ))}
-              </div>
+      {/* 人気記事（フルワイド背景・中身は1010px） */}
+      {popularArticles.length >= 2 && (
+        <div className="w-full py-12 lg:py-16" style={{ backgroundColor: 'rgba(12, 36, 97, 0.05)' }}>
+          <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0">
+            <h2 className="text-lg font-bold text-gray-800 mb-3">人気記事</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {popularArticles.map((article, i) => (
+                <Link
+                  key={article.id}
+                  href={`/articles/${article.slug}`}
+                  className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm transition-all"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base font-bold text-blue-500 leading-none">{i + 1}</span>
+                    {article.tags?.[0] && (
+                      <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full truncate">
+                        #{article.tags[0]}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-3">
+                    {article.title}
+                  </h3>
+                  <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
+                    {formatDate(article.created_at)}
+                  </time>
+                </Link>
+              ))}
             </div>
-          )}
-
-          <h2 className="text-lg font-bold text-gray-800 mb-1">最新記事</h2>
-          <p className="text-gray-600 text-sm">
-            AIが官公庁・法律ニュースを毎日収集・解説します
-          </p>
+          </div>
         </div>
+      )}
+
+      {/* 最新記事 */}
+      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-8 pb-8">
+        <h2 className="text-lg font-bold text-gray-800 mb-1">最新記事</h2>
+        <p className="text-gray-600 text-sm mb-5">
+          AIが官公庁・法律ニュースを毎日収集・解説します
+        </p>
 
         {articles.length === 0 ? (
           <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
@@ -278,7 +281,6 @@ export default async function HomePage({
             )}
           </>
         )}
-      </div>
       </div>
     </div>
   );
