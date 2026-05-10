@@ -38,10 +38,11 @@ export default async function Image({
   const titleLines = splitTitle(title, 12)
   const fontSize = titleLines.length >= 3 ? 42 : titleLines.length === 2 ? 50 : 56
 
-  const [bgData, fontData, fontThinData] = await Promise.all([
+  const [bgData, fontData, fontThinData, fontMediumData] = await Promise.all([
     readFile(path.join(process.cwd(), 'public', 'ogp-bg.png')),
     readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-ExtraBold.ttf')),
     readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-Regular.ttf')),
+    readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-Medium.ttf')),
   ])
   const bgSrc = `data:image/png;base64,${bgData.toString('base64')}`
 
@@ -66,7 +67,7 @@ export default async function Image({
         >
           <div style={{ width: '72px', height: '4px', backgroundColor: '#f5d060', marginBottom: '28px' }} />
 
-          <div style={{ color: '#f5d060', fontSize: '30px', fontWeight: 400, fontFamily: 'NotoSansJP', marginBottom: '32px' }}>
+          <div style={{ color: '#f5d060', fontSize: '30px', fontWeight: 500, fontFamily: 'NotoSansJP', marginBottom: '32px' }}>
             行政書士AI Pilot | 2026法改正ナビ
           </div>
 
@@ -104,6 +105,7 @@ export default async function Image({
       fonts: [
         { name: 'NotoSansJP', data: fontData, weight: 800, style: 'normal' },
         { name: 'NotoSansJP', data: fontThinData, weight: 400, style: 'normal' },
+        { name: 'NotoSansJP', data: fontMediumData, weight: 500, style: 'normal' },
       ],
     }
   )
