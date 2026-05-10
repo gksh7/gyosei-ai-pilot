@@ -47,3 +47,22 @@ body {
   padding-left: 10px;
   line-height: 1.4;
 }
+
+@keyframes article-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article-animate {
+  opacity: 0;
+}
+
+.article-animate.is-visible {
+  animation: article-slide-up 0.45s ease forwards;
+}

@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import type { Article } from "@/lib/types";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArticleList } from "@/components/ArticleList";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
 
@@ -185,10 +186,13 @@ export default async function HomePage({
             <div className="flex justify-center sm:block">
               <Link
                 href="/diagnosis"
-                className="diagnosis-btn inline-block text-base sm:text-xl font-bold px-6 sm:px-9 py-3 sm:py-3.5 rounded-full transition-all duration-200 hover:scale-105"
+                className="diagnosis-btn inline-flex items-center gap-2 text-base sm:text-xl font-bold px-6 sm:px-9 py-3 sm:py-3.5 rounded-full transition-all duration-200 hover:scale-105"
                 style={{ fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
               >
-                コンプライアンス診断を始める →
+                コンプライアンス診断を始める
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </Link>
             </div>
           </div>
@@ -204,7 +208,7 @@ export default async function HomePage({
           </h1>
 
           {popularArticles.length >= 2 && (
-            <div className="mb-12">
+            <div className="mb-12 rounded-xl p-4" style={{ backgroundColor: 'rgba(12, 36, 97, 0.05)' }}>
               <h2 className="text-lg font-bold text-gray-800 mb-3">人気記事</h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {popularArticles.map((article, i) => (
@@ -221,7 +225,7 @@ export default async function HomePage({
                         </span>
                       )}
                     </div>
-                    <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-3">
+                    <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-3">
                       {article.title}
                     </h3>
                     <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
@@ -246,40 +250,7 @@ export default async function HomePage({
           </div>
         ) : (
           <>
-            <div className="space-y-4">
-              {articles.map((article) => (
-                <Link
-                  key={article.id}
-                  href={`/articles/${article.slug}`}
-                  className="block bg-white rounded-xl border border-gray-300 p-5 hover:border-blue-400 hover:shadow-sm transition-all"
-                >
-                  <div className="flex gap-2 mb-2 flex-wrap">
-                    {article.tags?.slice(0, 3).map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h2 className="text-base font-semibold text-gray-900 mb-1.5 leading-snug">
-                    {article.title}
-                  </h2>
-                  {article.summary && (
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {article.summary}
-                    </p>
-                  )}
-                  <div className="flex items-center justify-between mt-2">
-                    <time dateTime={article.created_at} className="text-xs text-gray-400">
-                      {formatDate(article.created_at)}
-                    </time>
-                    <span className="text-xs text-blue-500 font-medium">続きを読む →</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <ArticleList articles={articles} />
 
             {/* ページネーション */}
             {totalPages > 1 && (
