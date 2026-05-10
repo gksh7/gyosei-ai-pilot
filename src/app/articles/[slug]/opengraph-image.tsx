@@ -41,7 +41,7 @@ export default async function Image({
   const [bgData, fontData, fontThinData] = await Promise.all([
     readFile(path.join(process.cwd(), 'public', 'ogp-bg.png')),
     readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-ExtraBold.ttf')),
-    readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-Light.ttf')),
+    readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-Regular.ttf')),
   ])
   const bgSrc = `data:image/png;base64,${bgData.toString('base64')}`
 
@@ -93,7 +93,7 @@ export default async function Image({
             )}
           </div>
 
-          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 300, fontFamily: 'NotoSansJP', marginTop: 'auto' }}>
+          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 400, fontFamily: 'NotoSansJP', marginTop: 'auto' }}>
             gyosei-ai-pilot.com
           </div>
         </div>
@@ -103,7 +103,7 @@ export default async function Image({
       ...size,
       fonts: [
         { name: 'NotoSansJP', data: fontData, weight: 800, style: 'normal' },
-        { name: 'NotoSansJP', data: fontThinData, weight: 300, style: 'normal' },
+        { name: 'NotoSansJP', data: fontThinData, weight: 400, style: 'normal' },
       ],
     }
   )
