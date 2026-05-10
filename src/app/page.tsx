@@ -203,12 +203,12 @@ export default async function HomePage({
       <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
       <div>
         <div className="mb-5">
-          <h1 className="text-2xl [@media(min-width:1024px)]:text-3xl font-bold text-gray-900 mb-5">
+          <h1 className="text-2xl [@media(min-width:1024px)]:text-3xl font-bold text-gray-900 mb-6 lg:mb-8">
             2026年改正行政書士法｜最新コンプライアンス情報
           </h1>
 
           {popularArticles.length >= 2 && (
-            <div className="mb-12 rounded-xl p-4" style={{ backgroundColor: 'rgba(12, 36, 97, 0.05)' }}>
+            <div className="mb-12 rounded-xl p-4 lg:px-8" style={{ backgroundColor: 'rgba(12, 36, 97, 0.05)' }}>
               <h2 className="text-lg font-bold text-gray-800 mb-3">人気記事</h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                 {popularArticles.map((article, i) => (
