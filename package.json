@@ -16,6 +16,7 @@
     "@next/third-parties": "^16.2.4",
     "@supabase/supabase-js": "^2.105.3",
     "axios": "^1.16.0",
+    "budoux": "^0.8.3",
     "cheerio": "^1.1.0",
     "dotenv": "^17.4.2",
     "next": "16.2.4",
