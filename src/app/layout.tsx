@@ -40,7 +40,7 @@ export default function RootLayout({
         <main>
           {children}
         </main>
-        <footer className="mt-5" style={{ backgroundColor: 'rgba(12, 36, 97, 0.05)', borderTop: '1px solid rgba(12, 36, 97, 0.08)' }}>
+        <footer className="mt-5" style={{ backgroundColor: 'rgba(12, 36, 97, 0.03)', borderTop: '1px solid rgba(12, 36, 97, 0.05)' }}>
           <div className="max-w-4xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-4 text-xs">
               <a href="/about" className="hover:text-gray-700 transition-colors">運営者情報</a>

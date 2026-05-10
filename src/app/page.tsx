@@ -208,7 +208,7 @@ export default async function HomePage({
 
       {/* 人気記事（フルワイド背景・中身は1010px） */}
       {popularArticles.length >= 2 && (
-        <div className="w-full py-8 lg:py-10" style={{ backgroundColor: 'rgba(12, 36, 97, 0.05)' }}>
+        <div className="w-full py-8 lg:py-10" style={{ backgroundColor: 'rgba(12, 36, 97, 0.03)' }}>
           <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0">
             <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-3">人気記事</h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -240,7 +240,7 @@ export default async function HomePage({
       )}
 
       {/* 最新記事 */}
-      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-8 pb-8">
+      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-16 pb-8">
         <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-1">最新記事</h2>
         <p className="text-gray-600 text-sm mb-5">
           AIが官公庁・法律ニュースを毎日収集・解説します
