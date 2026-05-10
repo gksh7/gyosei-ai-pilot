@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import { DIAGNOSIS_DISCLAIMER } from "@/lib/gyosei-law";
+import type { Affiliate } from "@/lib/types";
 
 const QUESTIONS = [
   {
@@ -102,6 +103,11 @@ export default function DiagnosisPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState("");
+  const [allAffiliates, setAllAffiliates] = useState<Affiliate[]>([]);
+
+  useEffect(() => {
+    fetch("/api/affiliates").then((r) => r.json()).then(setAllAffiliates).catch(() => {});
+  }, []);
 
   const currentQ = QUESTIONS[step];
   const progress = Math.round((step / QUESTIONS.length) * 100);
@@ -150,6 +156,15 @@ export default function DiagnosisPage() {
 
   if (result) {
     const styles = riskStyles[result.riskLevel];
+    const diagnosisAffiliates = allAffiliates
+      .filter((a) => {
+        const riskTags = (a.categories ?? []).filter((c) => c.startsWith("risk:"));
+        // risk:XXX タグがなければ全リスクに表示
+        if (riskTags.length === 0) return true;
+        return riskTags.includes(`risk:${result.riskLevel}`);
+      })
+      .slice(0, 3);
+
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="space-y-6 max-w-lg mx-auto">
@@ -201,6 +216,32 @@ export default function DiagnosisPage() {
             記事を読む
           </Link>
         </div>
+
+        {diagnosisAffiliates.length > 0 && (
+          <div className="pt-2 border-t border-gray-100">
+            <p className="text-xs font-medium text-gray-500 mb-3">関連サービス</p>
+            <div className="space-y-3">
+              {diagnosisAffiliates.map((affiliate) => (
+                <a
+                  key={affiliate.id}
+                  href={`/api/affiliate-click?id=${affiliate.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between p-4 bg-amber-50 border border-amber-200 rounded-xl hover:border-amber-400 hover:shadow-sm transition-all"
+                >
+                  <div>
+                    <p className="text-base font-semibold text-gray-800">{affiliate.service_name}</p>
+                    {affiliate.description && (
+                      <p className="text-xs text-gray-500 mt-0.5">{affiliate.description}</p>
+                    )}
+                  </div>
+                  <span className="text-xs text-amber-700 font-medium ml-3 shrink-0">詳細を見る →</span>
+                </a>
+              ))}
+            </div>
+            <p className="text-xs text-gray-400 mt-2">※ 広告を含む場合があります</p>
+          </div>
+        )}
 
         <p className="text-xs text-gray-400 leading-relaxed px-1 pt-2 border-t border-gray-100">
           ※ {DIAGNOSIS_DISCLAIMER}

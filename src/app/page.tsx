@@ -1,8 +1,9 @@
 import { supabase } from "@/lib/supabase";
-import type { Article } from "@/lib/types";
+import type { Article, Affiliate } from "@/lib/types";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArticleList } from "@/components/ArticleList";
+import AffiliateSidebar from "@/components/AffiliateSidebar";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
 
@@ -78,6 +79,16 @@ async function getPopularArticles(limit = 4): Promise<Article[]> {
   );
 }
 
+async function getTopPageAffiliates(): Promise<Affiliate[]> {
+  const { data } = await supabase
+    .from("affiliates")
+    .select("*")
+    .eq("is_active", true)
+    .order("created_at", { ascending: true })
+    .limit(3)
+  return (data as Affiliate[]) ?? []
+}
+
 async function getArticles(page: number): Promise<{ articles: Article[]; total: number }> {
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
@@ -109,9 +120,10 @@ export default async function HomePage({
 }) {
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10));
-  const [{ articles, total }, popularArticles] = await Promise.all([
+  const [{ articles, total }, popularArticles, topAffiliates] = await Promise.all([
     getArticles(page),
     getPopularArticles(),
+    getTopPageAffiliates(),
   ]);
   const totalPages = Math.ceil(total / PER_PAGE);
 
@@ -239,48 +251,52 @@ export default async function HomePage({
         </div>
       )}
 
-      {/* 最新記事 */}
+      {/* 最新記事 + サイドバー */}
       <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-16 pb-8">
         <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-1">最新記事</h2>
         <p className="text-gray-600 text-sm mb-5">
           AIが官公庁・法律ニュースを毎日収集・解説します
         </p>
+        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex-1 min-w-0">
+          {articles.length === 0 ? (
+            <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+              <p className="text-gray-600 text-lg mb-2">記事を準備中です</p>
+              <p className="text-gray-400 text-sm">毎朝自動的に記事が追加されます</p>
+            </div>
+          ) : (
+            <>
+              <ArticleList articles={articles} />
 
-        {articles.length === 0 ? (
-          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-            <p className="text-gray-600 text-lg mb-2">記事を準備中です</p>
-            <p className="text-gray-400 text-sm">毎朝自動的に記事が追加されます</p>
-          </div>
-        ) : (
-          <>
-            <ArticleList articles={articles} />
-
-            {/* ページネーション */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
-                {page > 1 && (
-                  <Link
-                    href={`/?page=${page - 1}`}
-                    className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
-                  >
-                    ← 前へ
-                  </Link>
-                )}
-                <span className="text-sm text-gray-600">
-                  {page} / {totalPages}
-                </span>
-                {page < totalPages && (
-                  <Link
-                    href={`/?page=${page + 1}`}
-                    className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
-                  >
-                    次へ →
-                  </Link>
-                )}
-              </div>
-            )}
-          </>
-        )}
+              {/* ページネーション */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-8">
+                  {page > 1 && (
+                    <Link
+                      href={`/?page=${page - 1}`}
+                      className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                    >
+                      ← 前へ
+                    </Link>
+                  )}
+                  <span className="text-sm text-gray-600">
+                    {page} / {totalPages}
+                  </span>
+                  {page < totalPages && (
+                    <Link
+                      href={`/?page=${page + 1}`}
+                      className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                    >
+                      次へ →
+                    </Link>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+        <AffiliateSidebar affiliates={topAffiliates} />
+        </div>
       </div>
     </div>
   );

@@ -26,6 +26,8 @@ export default function Header() {
             <Link href="/articles" className="transition-all hover:[color:#1e5da9] hover:font-bold">記事一覧</Link>
             <span className="text-gray-300 select-none">|</span>
             <Link href="/diagnosis" className="transition-all hover:[color:#1e5da9] hover:font-bold">コンプライアンス診断</Link>
+            <span className="text-gray-300 select-none">|</span>
+            <Link href="/contact" className="transition-all hover:[color:#1e5da9] hover:font-bold">お問い合わせ</Link>
           </nav>
 
           {/* ハンバーガーボタン（スマホのみ） */}
@@ -83,14 +85,17 @@ export default function Header() {
           </button>
         </div>
         <nav className="flex flex-col px-6 py-4 gap-7 text-base text-gray-700">
-          <Link href="/" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
-            トップに戻る
-          </Link>
           <Link href="/articles" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
             記事一覧
           </Link>
           <Link href="/diagnosis" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
             コンプライアンス診断
+          </Link>
+          <Link href="/contact" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
+            お問い合わせ
+          </Link>
+          <Link href="/" className="hover:text-blue-600 transition-colors" onClick={() => setOpen(false)}>
+            ← トップに戻る
           </Link>
         </nav>
       </div>

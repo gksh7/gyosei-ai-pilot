@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import PageTracker from "./PageTracker";
+import { getMatchingAffiliates } from "@/lib/affiliates";
+import AffiliateSidebar from "@/components/AffiliateSidebar";
 
 export const revalidate = 3600;
 
@@ -113,9 +115,10 @@ export default async function ArticlePage({
 
   if (!article) notFound();
 
-  const [sources, { prev, next }] = await Promise.all([
+  const [sources, { prev, next }, affiliates] = await Promise.all([
     getSources(article.source_ids ?? []),
     getAdjacentArticles(article.created_at),
+    getMatchingAffiliates(article.tags ?? []),
   ]);
 
   const articleUrl = `${SITE_URL}/articles/${article.slug}`;
@@ -149,7 +152,7 @@ export default async function ArticlePage({
   };
 
   return (
-    <article className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
+    <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <PageTracker articleId={article.id} />
@@ -173,6 +176,8 @@ export default async function ArticlePage({
         </time>
       </div>
 
+    <div className="flex flex-col md:flex-row gap-8">
+    <article className="flex-1 min-w-0">
       {article.summary && (
         <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 mb-8">
           <p className="text-sm font-medium text-blue-700 mb-1">要約</p>
@@ -232,5 +237,8 @@ export default async function ArticlePage({
         </div>
       )}
     </article>
+    <AffiliateSidebar affiliates={affiliates} articleId={article.id} />
+    </div>
+    </div>
   );
 }
