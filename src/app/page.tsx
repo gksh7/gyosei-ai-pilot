@@ -200,7 +200,7 @@ export default async function HomePage({
       </div>
 
       {/* 記事一覧（コンテナ内） */}
-      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8">
+      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 py-8 lg:pt-16">
       <div>
         <div className="mb-5">
           <h1 className="text-2xl [@media(min-width:1024px)]:text-3xl font-bold text-gray-900 mb-6 lg:mb-8">
