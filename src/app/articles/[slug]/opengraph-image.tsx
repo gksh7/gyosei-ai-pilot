@@ -49,17 +49,6 @@ export default async function Image({
           src={bgSrc}
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         />
-        {/* テキスト視認用オーバーレイ */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(5, 20, 60, 0.58)',
-          }}
-        />
         {/* コンテンツ */}
         <div
           style={{
