@@ -60,9 +60,9 @@ export default async function Image({
             padding: '64px',
           }}
         >
-          <div style={{ width: '72px', height: '4px', backgroundColor: '#e0b860', marginBottom: '28px' }} />
+          <div style={{ width: '72px', height: '4px', backgroundColor: '#f5d060', marginBottom: '28px' }} />
 
-          <div style={{ color: '#e0b860', fontSize: '34px', fontWeight: 700, marginBottom: '32px' }}>
+          <div style={{ color: '#f5d060', fontSize: '34px', fontWeight: 700, marginBottom: '32px' }}>
             行政書士AI Pilot | 2026法改正ナビ
           </div>
 
