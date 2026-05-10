@@ -1,10 +1,20 @@
 import { ImageResponse } from 'next/og'
 import { createClient } from '@supabase/supabase-js'
+import { readFile } from 'fs/promises'
+import path from 'path'
 
 export const runtime = 'nodejs'
 export const alt = '行政書士AI Pilot｜2026法改正ナビ'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
+
+function splitTitle(title: string, charsPerLine: number): string[] {
+  const lines: string[] = []
+  for (let i = 0; i < title.length; i += charsPerLine) {
+    lines.push(title.slice(i, i + charsPerLine))
+  }
+  return lines
+}
 
 export default async function Image({
   params,
@@ -25,32 +35,74 @@ export default async function Image({
     .single()
 
   const title = article?.title ?? '行政書士AI Pilot'
-  const fontSize = title.length > 35 ? 40 : title.length > 20 ? 48 : 56
+  const titleLines = splitTitle(title, 12)
+  const fontSize = titleLines.length >= 3 ? 42 : titleLines.length === 2 ? 50 : 56
+
+  const bgData = await readFile(path.join(process.cwd(), 'public', 'ogp-bg.png'))
+  const bgSrc = `data:image/png;base64,${bgData.toString('base64')}`
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundColor: '#1e5da9',
-          padding: '64px',
-        }}
-      >
-        <div style={{ width: '72px', height: '4px', backgroundColor: '#b8922e', marginBottom: '28px' }} />
+      <div style={{ width: '100%', height: '100%', display: 'flex', position: 'relative' }}>
+        {/* 背景画像 */}
+        <img
+          src={bgSrc}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+        {/* テキスト視認用オーバーレイ */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(5, 20, 60, 0.58)',
+          }}
+        />
+        {/* コンテンツ */}
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '64px',
+          }}
+        >
+          <div style={{ width: '72px', height: '4px', backgroundColor: '#e0b860', marginBottom: '28px' }} />
 
-        <div style={{ color: '#b8922e', fontSize: '34px', fontWeight: 700, marginBottom: '32px' }}>
-          行政書士AI Pilot | 2026法改正ナビ
-        </div>
+          <div style={{ color: '#e0b860', fontSize: '34px', fontWeight: 700, marginBottom: '32px' }}>
+            行政書士AI Pilot | 2026法改正ナビ
+          </div>
 
-        <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 700, lineHeight: 1.5 }}>
-          {title}
-        </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {titleLines[0] && (
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+                {titleLines[0]}
+              </div>
+            )}
+            {titleLines[1] && (
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+                {titleLines[1]}
+              </div>
+            )}
+            {titleLines[2] && (
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+                {titleLines[2]}
+              </div>
+            )}
+            {titleLines[3] && (
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+                {titleLines[3]}
+              </div>
+            )}
+          </div>
 
-        <div style={{ color: '#64748b', fontSize: '20px', marginTop: 'auto' }}>
-          gyosei-ai-pilot.com
+          <div style={{ color: '#ffffff', fontSize: '20px', marginTop: 'auto' }}>
+            gyosei-ai-pilot.com
+          </div>
         </div>
       </div>
     ),
