@@ -38,7 +38,10 @@ export default async function Image({
   const titleLines = splitTitle(title, 12)
   const fontSize = titleLines.length >= 3 ? 42 : titleLines.length === 2 ? 50 : 56
 
-  const bgData = await readFile(path.join(process.cwd(), 'public', 'ogp-bg.png'))
+  const [bgData, fontData] = await Promise.all([
+    readFile(path.join(process.cwd(), 'public', 'ogp-bg.png')),
+    readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-ExtraBold.ttf')),
+  ])
   const bgSrc = `data:image/png;base64,${bgData.toString('base64')}`
 
   return new ImageResponse(
@@ -68,22 +71,22 @@ export default async function Image({
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {titleLines[0] && (
-              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 800, fontFamily: 'NotoSansJP', lineHeight: 1.4 }}>
                 {titleLines[0]}
               </div>
             )}
             {titleLines[1] && (
-              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 800, fontFamily: 'NotoSansJP', lineHeight: 1.4 }}>
                 {titleLines[1]}
               </div>
             )}
             {titleLines[2] && (
-              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 800, fontFamily: 'NotoSansJP', lineHeight: 1.4 }}>
                 {titleLines[2]}
               </div>
             )}
             {titleLines[3] && (
-              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 900, lineHeight: 1.4 }}>
+              <div style={{ color: '#ffffff', fontSize: `${fontSize}px`, fontWeight: 800, fontFamily: 'NotoSansJP', lineHeight: 1.4 }}>
                 {titleLines[3]}
               </div>
             )}
@@ -95,6 +98,9 @@ export default async function Image({
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [{ name: 'NotoSansJP', data: fontData, weight: 800, style: 'normal' }],
+    }
   )
 }
