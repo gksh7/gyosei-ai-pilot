@@ -35,13 +35,13 @@ export default async function Image({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#0f172a',
+          backgroundColor: '#1e5da9',
           padding: '64px',
         }}
       >
         <div style={{ width: '72px', height: '4px', backgroundColor: '#b8922e', marginBottom: '28px' }} />
 
-        <div style={{ color: '#b8922e', fontSize: '26px', fontWeight: 700, marginBottom: '32px' }}>
+        <div style={{ color: '#b8922e', fontSize: '34px', fontWeight: 700, marginBottom: '32px' }}>
           行政書士AI Pilot | 2026法改正ナビ
         </div>
 
