@@ -38,9 +38,10 @@ export default async function Image({
   const titleLines = splitTitle(title, 12)
   const fontSize = titleLines.length >= 3 ? 42 : titleLines.length === 2 ? 50 : 56
 
-  const [bgData, fontData] = await Promise.all([
+  const [bgData, fontData, fontThinData] = await Promise.all([
     readFile(path.join(process.cwd(), 'public', 'ogp-bg.png')),
     readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-ExtraBold.ttf')),
+    readFile(path.join(process.cwd(), 'public', 'fonts', 'NotoSansJP-Thin.ttf')),
   ])
   const bgSrc = `data:image/png;base64,${bgData.toString('base64')}`
 
@@ -65,7 +66,7 @@ export default async function Image({
         >
           <div style={{ width: '72px', height: '4px', backgroundColor: '#f5d060', marginBottom: '28px' }} />
 
-          <div style={{ color: '#f5d060', fontSize: '26px', fontWeight: 400, fontFamily: 'sans-serif', marginBottom: '32px' }}>
+          <div style={{ color: '#f5d060', fontSize: '30px', fontWeight: 400, fontFamily: 'sans-serif', marginBottom: '32px' }}>
             行政書士AI Pilot | 2026法改正ナビ
           </div>
 
@@ -92,7 +93,7 @@ export default async function Image({
             )}
           </div>
 
-          <div style={{ color: '#ffffff', fontSize: '20px', fontWeight: 300, fontFamily: 'sans-serif', marginTop: 'auto' }}>
+          <div style={{ color: '#ffffff', fontSize: '20px', fontWeight: 100, fontFamily: 'NotoSansJP', marginTop: 'auto' }}>
             gyosei-ai-pilot.com
           </div>
         </div>
@@ -100,7 +101,10 @@ export default async function Image({
     ),
     {
       ...size,
-      fonts: [{ name: 'NotoSansJP', data: fontData, weight: 800, style: 'normal' }],
+      fonts: [
+        { name: 'NotoSansJP', data: fontData, weight: 800, style: 'normal' },
+        { name: 'NotoSansJP', data: fontThinData, weight: 100, style: 'normal' },
+      ],
     }
   )
 }
