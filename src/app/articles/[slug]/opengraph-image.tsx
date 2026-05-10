@@ -65,7 +65,7 @@ export default async function Image({
         >
           <div style={{ width: '72px', height: '4px', backgroundColor: '#f5d060', marginBottom: '28px' }} />
 
-          <div style={{ color: '#f5d060', fontSize: '34px', fontWeight: 700, fontFamily: 'sans-serif', marginBottom: '32px' }}>
+          <div style={{ color: '#f5d060', fontSize: '26px', fontWeight: 400, fontFamily: 'sans-serif', marginBottom: '32px' }}>
             行政書士AI Pilot | 2026法改正ナビ
           </div>
 
@@ -92,7 +92,7 @@ export default async function Image({
             )}
           </div>
 
-          <div style={{ color: '#ffffff', fontSize: '20px', fontFamily: 'sans-serif', marginTop: 'auto' }}>
+          <div style={{ color: '#ffffff', fontSize: '20px', fontWeight: 300, fontFamily: 'sans-serif', marginTop: 'auto' }}>
             gyosei-ai-pilot.com
           </div>
         </div>
