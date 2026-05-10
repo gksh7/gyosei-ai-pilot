@@ -93,7 +93,7 @@ export default async function Image({
             )}
           </div>
 
-          <div style={{ color: '#ffffff', fontSize: '17px', fontWeight: 300, fontFamily: 'NotoSansJP', marginTop: 'auto' }}>
+          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 300, fontFamily: 'NotoSansJP', marginTop: 'auto' }}>
             gyosei-ai-pilot.com
           </div>
         </div>
