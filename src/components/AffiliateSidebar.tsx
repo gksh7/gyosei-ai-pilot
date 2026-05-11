@@ -34,7 +34,7 @@ export default function AffiliateSidebar({
       )}
 
       {affiliates.length > 0 && (
-        <>
+        <div className="md:sticky md:top-[100px]">
           {/* 記事ページではデスクトップh2を非表示（ヘッダー行に移動済み）、ホームでは表示 */}
           <h2 className={`text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-3 ${articleId ? 'md:hidden' : 'md:mb-1'}`}>関連サービス</h2>
           {!articleId && <p className="hidden md:block md:invisible text-sm mb-5" aria-hidden="true">&nbsp;</p>}
@@ -56,7 +56,7 @@ export default function AffiliateSidebar({
             ))}
           </div>
           <p className="md:hidden text-xs text-gray-400 mt-5">※広告を含む場合があります</p>
-        </>
+        </div>
       )}
     </aside>
   );
