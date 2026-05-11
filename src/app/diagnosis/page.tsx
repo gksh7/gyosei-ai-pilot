@@ -202,6 +202,10 @@ export default function DiagnosisPage() {
           </ul>
         </div>
 
+        <p className="text-xs text-gray-400 leading-relaxed px-1 pt-4 border-t border-gray-100">
+          ※ {DIAGNOSIS_DISCLAIMER}
+        </p>
+
         <div className="flex gap-3">
           <button
             onClick={handleReset}
@@ -218,8 +222,8 @@ export default function DiagnosisPage() {
         </div>
 
         {diagnosisAffiliates.length > 0 && (
-          <div className="pt-2 border-t border-gray-100">
-            <p className="text-xs font-medium text-gray-500 mb-3">関連サービス</p>
+          <div className="!mt-10 pt-4 border-t border-gray-100">
+            <p className="text-xl font-bold text-gray-900 mb-3">関連サービス</p>
             <div className="space-y-3">
               {diagnosisAffiliates.map((affiliate) => (
                 <a
@@ -239,13 +243,9 @@ export default function DiagnosisPage() {
                 </a>
               ))}
             </div>
-            <p className="text-xs text-gray-400 mt-2">※ 広告を含む場合があります</p>
+            <p className="text-xs text-gray-400 mt-5">※ 広告を含む場合があります</p>
           </div>
         )}
-
-        <p className="text-xs text-gray-400 leading-relaxed px-1 pt-2 border-t border-gray-100">
-          ※ {DIAGNOSIS_DISCLAIMER}
-        </p>
       </div>
       </div>
     );

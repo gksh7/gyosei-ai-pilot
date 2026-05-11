@@ -55,7 +55,7 @@ export default function AffiliateSidebar({
               </a>
             ))}
           </div>
-          <p className="md:hidden text-xs text-gray-400 mt-3">※広告を含む場合があります</p>
+          <p className="md:hidden text-xs text-gray-400 mt-5">※広告を含む場合があります</p>
         </>
       )}
     </aside>
