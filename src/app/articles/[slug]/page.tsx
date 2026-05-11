@@ -258,7 +258,7 @@ export default async function ArticlePage({
     >
       <div>
         <p className="text-blue-200 text-base font-medium mb-1">無料・即時診断</p>
-        <p className="text-xl lg:text-3xl font-bold text-white">あなたの会社は大丈夫？</p>
+        <p className="text-2xl lg:text-3xl font-bold text-white">あなたの会社は大丈夫？</p>
       </div>
       <Link
         href="/diagnosis"
