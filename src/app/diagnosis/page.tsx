@@ -202,7 +202,7 @@ export default function DiagnosisPage() {
           </ul>
         </div>
 
-        <p className="text-xs text-gray-400 leading-relaxed px-1 pt-4 border-t border-gray-100">
+        <p className="text-xs text-gray-400 leading-relaxed px-1 pt-4">
           ※ {DIAGNOSIS_DISCLAIMER}
         </p>
 
