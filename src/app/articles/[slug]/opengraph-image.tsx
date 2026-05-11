@@ -73,8 +73,8 @@ export default async function Image({
     .single()
 
   const title = article?.title ?? '行政書士AI Pilot'
-  const titleLines = splitTitle(title, 12)
-  const fontSize = titleLines.length >= 3 ? 42 : titleLines.length === 2 ? 50 : 56
+  const titleLines = splitTitle(title, 11)
+  const fontSize = titleLines.length >= 3 ? 52 : titleLines.length === 2 ? 60 : 68
 
   const [bgData, fontData, fontThinData, fontMediumData] = await Promise.all([
     readFile(path.join(process.cwd(), 'public', 'ogp-bg.png')),
@@ -132,7 +132,7 @@ export default async function Image({
             )}
           </div>
 
-          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 400, fontFamily: 'NotoSansJP', marginTop: 'auto' }}>
+          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 400, fontFamily: 'NotoSansJP', marginTop: 'auto', marginBottom: '30px' }}>
             gyosei-ai-pilot.com
           </div>
         </div>

@@ -157,26 +157,37 @@ export default async function ArticlePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <PageTracker articleId={article.id} />
       <Breadcrumb items={[{ label: "トップ", href: "/" }, { label: "記事一覧", href: "/articles" }, { label: article.title }]} />
-      <div className="mb-6">
-        <div className="flex gap-2 mb-4 flex-wrap">
-          {article.tags?.map((tag: string) => (
-            <span
-              key={tag}
-              className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full"
-            >
-              #{tag}
-            </span>
-          ))}
+      {/* ヘッダー行：記事タイトルエリア ＋ デスクトップ「関連サービス」h2 */}
+      <div className="mb-6 md:flex md:flex-row md:gap-9 lg:gap-14 md:items-start">
+        <div className="flex-1 min-w-0">
+          <div className="flex gap-2 mb-4 flex-wrap">
+            {article.tags?.map((tag: string) => (
+              <span
+                key={tag}
+                className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 leading-snug mb-3">
+            {article.title}
+          </h1>
+          <time dateTime={article.created_at} className="text-sm text-gray-400">
+            {formatDate(article.created_at)}
+          </time>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 leading-snug mb-3">
-          {article.title}
-        </h1>
-        <time dateTime={article.created_at} className="text-sm text-gray-400">
-          {formatDate(article.created_at)}
-        </time>
+        {/* 左のタグ行と同じ高さの invisible プレースホルダーで h1 に揃える */}
+        <div className="hidden md:block md:w-52 md:shrink-0">
+          <div className="mb-4 invisible" aria-hidden="true">
+            <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">&nbsp;</span>
+          </div>
+          <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-3">関連サービス</h2>
+          <p className="text-xs text-gray-400">※広告を含む場合があります</p>
+        </div>
       </div>
 
-    <div className="flex flex-col md:flex-row gap-8">
+    <div className="flex flex-col md:flex-row gap-8 md:gap-9 lg:gap-14">
     <article className="flex-1 min-w-0">
       {article.summary && (
         <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 mb-8">
@@ -238,6 +249,26 @@ export default async function ArticlePage({
       )}
     </article>
     <AffiliateSidebar affiliates={affiliates} articleId={article.id} />
+    </div>
+
+    {/* 診断CTAバナー（デスクトップのみ・フッター上） */}
+    <div
+      className="hidden md:flex items-center justify-between rounded-2xl px-10 py-8 mt-12 mb-12"
+      style={{ backgroundColor: "#0c2461" }}
+    >
+      <div>
+        <p className="text-blue-200 text-base font-medium mb-1">無料・即時診断</p>
+        <p className="text-3xl font-bold text-white">あなたの会社は大丈夫？</p>
+      </div>
+      <Link
+        href="/diagnosis"
+        className="diagnosis-btn inline-flex items-center gap-2 text-xl font-bold px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-105 shrink-0"
+      >
+        コンプライアンス診断を始める
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </Link>
     </div>
     </div>
   );

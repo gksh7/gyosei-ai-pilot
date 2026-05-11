@@ -224,28 +224,36 @@ export default async function HomePage({
           <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0">
             <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-3">人気記事</h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              {popularArticles.map((article, i) => (
-                <Link
-                  key={article.id}
-                  href={`/articles/${article.slug}`}
-                  className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm transition-all"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-base font-bold text-blue-500 leading-none">{i + 1}</span>
-                    {article.tags?.[0] && (
-                      <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full truncate">
-                        #{article.tags[0]}
+              {popularArticles.map((article, i) => {
+                const rankBg = ['#DAA520', '#A8A9AD', '#CD7F32', '#9CA3AF'][i] ?? '#9CA3AF'
+                return (
+                  <Link
+                    key={article.id}
+                    href={`/articles/${article.slug}`}
+                    className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm transition-all"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-base font-bold text-white shrink-0"
+                        style={{ backgroundColor: rankBg }}
+                      >
+                        {i + 1}
                       </span>
-                    )}
-                  </div>
-                  <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-3">
-                    {article.title}
-                  </h3>
-                  <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
-                    {formatDate(article.created_at)}
-                  </time>
-                </Link>
-              ))}
+                      {article.tags?.[0] && (
+                        <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full truncate">
+                          #{article.tags[0]}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-3">
+                      {article.title}
+                    </h3>
+                    <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
+                      {formatDate(article.created_at)}
+                    </time>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -253,12 +261,12 @@ export default async function HomePage({
 
       {/* 最新記事 + サイドバー */}
       <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-16 pb-8">
-        <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-1">最新記事</h2>
-        <p className="text-gray-600 text-sm mb-5">
-          AIが官公庁・法律ニュースを毎日収集・解説します
-        </p>
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-9 lg:gap-14">
         <div className="flex-1 min-w-0">
+          <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-1">最新記事</h2>
+          <p className="text-gray-600 text-sm mb-5">
+            AIが官公庁・法律ニュースを毎日収集・解説します
+          </p>
           {articles.length === 0 ? (
             <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
               <p className="text-gray-600 text-lg mb-2">記事を準備中です</p>

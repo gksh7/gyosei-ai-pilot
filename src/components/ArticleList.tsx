@@ -58,15 +58,15 @@ export function ArticleList({ articles }: { articles: Article[] }) {
             <p className="text-gray-600 text-sm leading-relaxed">{article.summary}</p>
           )}
           <div className="flex items-center justify-between mt-2">
-            <time dateTime={article.created_at} className="text-xs text-gray-400">
-              {formatDate(article.created_at)}
-            </time>
             <span className="flex items-center gap-1 text-xs text-blue-500 font-medium">
               続きを読む
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </span>
+            <time dateTime={article.created_at} className="text-xs text-gray-400">
+              {formatDate(article.created_at)}
+            </time>
           </div>
         </Link>
       ))}
