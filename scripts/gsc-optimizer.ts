@@ -1,9 +1,13 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { Resend } from 'resend'
 import { supabase } from './supabase-client'
 import { createGscClient, fetchPageRows, fetchQueryRows, GscRow } from './gsc-client'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 const SITE_BASE = 'https://gyosei-ai-pilot.com'
+
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? 'noreply@gyosei-ai-pilot.com'
+const TO_EMAIL   = process.env.RESEND_TO_EMAIL   ?? 'gksh1613@gmail.com'
 
 // タイトル最適化のしきい値
 const TITLE_OPT_MIN_IMPRESSIONS = 30
@@ -15,9 +19,17 @@ const GAP_MAX_POSITION = 10
 
 type Article = { id: string; slug: string; title: string; tags: string[] | null }
 
+type TitleCandidate = {
+  currentTitle: string
+  suggestions: string[]
+  impressions: number
+  ctrPct: string
+  position: string
+}
+
 /**
  * GSC最適化メイン処理。
- * - 高impression・低CTRの記事タイトル改善候補をSupabaseに保存
+ * - 高impression・低CTRの記事タイトル改善候補をSupabaseに保存しメール通知
  * - 1〜10位だがカバー記事がないクエリを返す（翌朝の記事テーマ注入用）
  */
 export async function runGscOptimizer(): Promise<string[]> {
@@ -36,25 +48,26 @@ export async function runGscOptimizer(): Promise<string[]> {
 
   const articles: Article[] = articlesResult.data ?? []
 
-  const [, gapQueries] = await Promise.all([
+  const [titleCandidates, gapQueries] = await Promise.all([
     optimizeTitles(pageRows, articles),
     detectGapQueries(queryRows, articles),
   ])
 
+  await sendReport(titleCandidates, gapQueries)
+
   return gapQueries
 }
 
-async function optimizeTitles(pageRows: GscRow[], articles: Article[]) {
+async function optimizeTitles(pageRows: GscRow[], articles: Article[]): Promise<TitleCandidate[]> {
   const lowCtrRows = pageRows.filter(row =>
     row.impressions >= TITLE_OPT_MIN_IMPRESSIONS && row.ctr < TITLE_OPT_MAX_CTR,
   )
 
   if (lowCtrRows.length === 0) {
     console.log('📊 タイトル最適化対象なし（高impression・低CTRページ 0件）')
-    return
+    return []
   }
 
-  // URLから記事をルックアップ
   const slugToArticle = new Map(articles.map(a => [a.slug, a]))
   const candidates = lowCtrRows
     .map(row => {
@@ -68,12 +81,13 @@ async function optimizeTitles(pageRows: GscRow[], articles: Article[]) {
 
   if (candidates.length === 0) {
     console.log('📊 タイトル最適化: GSCページURLと記事スラッグの一致なし')
-    return
+    return []
   }
 
   console.log(`\n🔍 タイトル改善候補を生成中（${candidates.length}件）...`)
 
-  const rows: object[] = []
+  const results: TitleCandidate[] = []
+  const dbRows: object[] = []
 
   for (const { row, article } of candidates) {
     const impressions = row.impressions
@@ -96,33 +110,36 @@ JSON配列のみで出力: ["案1", "案2", "案3"]`,
     })
 
     const text = res.content[0].type === 'text' ? res.content[0].text : '[]'
-    let suggested: string[] = []
+    let suggestions: string[] = []
     try {
-      suggested = JSON.parse(text.match(/\[[\s\S]*\]/)?.[0] ?? '[]')
+      suggestions = JSON.parse(text.match(/\[[\s\S]*\]/)?.[0] ?? '[]')
     } catch {
-      suggested = []
+      suggestions = []
     }
 
     console.log(`\n📌 ${article.title}`)
     console.log(`   impressions:${impressions} CTR:${ctrPct}% 順位:${position}位`)
-    suggested.forEach((s, i) => console.log(`   案${i + 1}: ${s}`))
+    suggestions.forEach((s, i) => console.log(`   案${i + 1}: ${s}`))
 
-    rows.push({
+    results.push({ currentTitle: article.title, suggestions, impressions, ctrPct, position })
+    dbRows.push({
       article_id: article.id,
       article_slug: article.slug,
       current_title: article.title,
-      suggested_titles: suggested,
+      suggested_titles: suggestions,
       impressions,
       ctr: row.ctr,
       position: row.position,
     })
   }
 
-  if (rows.length > 0) {
-    const { error } = await supabase.from('gsc_suggestions').insert(rows)
+  if (dbRows.length > 0) {
+    const { error } = await supabase.from('gsc_suggestions').insert(dbRows)
     if (error) console.error('❌ gsc_suggestions 保存エラー:', error.message)
-    else console.log(`\n✅ gsc_suggestions に ${rows.length}件保存`)
+    else console.log(`\n✅ gsc_suggestions に ${dbRows.length}件保存`)
   }
+
+  return results
 }
 
 async function detectGapQueries(queryRows: GscRow[], articles: Article[]): Promise<string[]> {
@@ -135,14 +152,12 @@ async function detectGapQueries(queryRows: GscRow[], articles: Article[]): Promi
     return []
   }
 
-  // 既存記事テキスト（タイトル＋タグ＋スラッグ）
   const articleTexts = articles.map(a =>
     `${a.title} ${(a.tags ?? []).join(' ')} ${a.slug}`.toLowerCase(),
   )
 
   const isNotCovered = (query: string) => {
     const words = query.toLowerCase().split(/\s+/).filter(w => w.length > 1)
-    // 主要単語が1つもいずれかの記事にない場合をギャップとみなす
     return words.every(w => !articleTexts.some(t => t.includes(w)))
   }
 
@@ -159,4 +174,54 @@ async function detectGapQueries(queryRows: GscRow[], articles: Article[]): Promi
 
   console.log(`\n🎯 ギャップクエリ（翌朝の記事テーマに注入）: ${gapQueries.join('、')}`)
   return gapQueries
+}
+
+async function sendReport(titleCandidates: TitleCandidate[], gapQueries: string[]) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log('⚠️  RESEND_API_KEY 未設定。メール送信をスキップ。')
+    return
+  }
+  if (titleCandidates.length === 0 && gapQueries.length === 0) {
+    console.log('📧 GSCレポート: 通知すべき内容なし。メール送信をスキップ。')
+    return
+  }
+
+  const today = new Date().toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' })
+  const lines: string[] = [`【GSC日次レポート】${today}`, '']
+
+  if (titleCandidates.length > 0) {
+    lines.push(`■ タイトル改善候補（${titleCandidates.length}件）`)
+    for (const c of titleCandidates) {
+      lines.push(`\n現在: ${c.currentTitle}`)
+      lines.push(`      ${c.impressions}imp / CTR ${c.ctrPct}% / 平均${c.position}位`)
+      c.suggestions.forEach((s, i) => lines.push(`  案${i + 1}: ${s}`))
+    }
+    lines.push('')
+  }
+
+  if (gapQueries.length > 0) {
+    lines.push(`■ 今日の記事テーマ（ギャップクエリ注入 ${gapQueries.length}件）`)
+    gapQueries.forEach(q => lines.push(`  ・${q}`))
+    lines.push('')
+  }
+
+  lines.push('─'.repeat(40))
+  lines.push('Supabase gsc_suggestions テーブルで全履歴を確認できます。')
+
+  const resend = new Resend(process.env.RESEND_API_KEY)
+  const subject = [
+    '[GSC]',
+    titleCandidates.length > 0 ? `タイトル改善${titleCandidates.length}件` : '',
+    gapQueries.length > 0 ? `ギャップクエリ${gapQueries.length}件` : '',
+  ].filter(Boolean).join(' / ')
+
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: TO_EMAIL,
+    subject,
+    text: lines.join('\n'),
+  })
+
+  if (error) console.error('❌ GSCレポートメール送信エラー:', error)
+  else console.log(`\n📧 GSCレポートを ${TO_EMAIL} に送信しました`)
 }
