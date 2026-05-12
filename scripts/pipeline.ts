@@ -2,9 +2,13 @@ import { supabase } from './supabase-client'
 import { scrapeAll } from './scraper'
 import { generateArticle } from './generator'
 import { postToX } from './poster'
+import { runGscOptimizer } from './gsc-optimizer'
 
 async function run() {
   console.log('🚀 パイプライン開始:', new Date().toLocaleString('ja-JP'))
+
+  // 1b. GSC最適化（タイトル改善候補保存 + ギャップクエリ取得）
+  const gapQueries = await runGscOptimizer()
 
   // 1. スクレイプ
   const scraped = await scrapeAll(supabase)
@@ -52,7 +56,7 @@ async function run() {
 
   // 3. 記事生成
   console.log('✍️ 記事生成中...')
-  const article = await generateArticle(scraped, recentTitles, popularThemes)
+  const article = await generateArticle(scraped, recentTitles, popularThemes, gapQueries)
   console.log(`記事生成完了: ${article.title}`)
 
   // 4. Supabaseに保存（参照元IDを含める）

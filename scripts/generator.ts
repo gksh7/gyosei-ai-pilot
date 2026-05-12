@@ -22,7 +22,7 @@ const TARGET_KEYWORDS = {
   ],
 }
 
-export async function generateArticle(scrapedContent: ScrapedContent[], recentTitles: string[] = [], popularThemes: string[] = []) {
+export async function generateArticle(scrapedContent: ScrapedContent[], recentTitles: string[] = [], popularThemes: string[] = [], gapQueries: string[] = []) {
   const sourceText = scrapedContent
     .slice(0, 5)
     .map(s => `【${s.source}】\n${s.content}`)
@@ -48,7 +48,7 @@ export async function generateArticle(scrapedContent: ScrapedContent[], recentTi
       role: 'user',
       content: `以下の官公庁・ニュース情報をもとに記事を1本作成してください。
 
-${recentTitles.length > 0 ? `【掲載済み記事タイトル（これらと重複するトピックは避けてください）】\n${recentTitles.map(t => `・${t}`).join('\n')}\n\n` : ''}${popularThemes.length > 0 ? `【読者に人気のテーマ（関連トピックを優先してください）】\n${popularThemes.join('、')}\n\n` : ''}【収集情報】
+${recentTitles.length > 0 ? `【掲載済み記事タイトル（これらと重複するトピックは避けてください）】\n${recentTitles.map(t => `・${t}`).join('\n')}\n\n` : ''}${gapQueries.length > 0 ? `【GSCギャップクエリ（検索上位だが専用記事がない最優先テーマ）】\n${gapQueries.map(q => `・${q}`).join('\n')}\nこれらのクエリに直接答える記事を最優先で選んでください。\n\n` : ''}${popularThemes.length > 0 ? `【読者に人気のテーマ（関連トピックを優先してください）】\n${popularThemes.join('、')}\n\n` : ''}【収集情報】
 ${sourceText}
 
 以下のJSON形式のみで出力（前後に文章不要）：

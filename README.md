@@ -29,8 +29,10 @@
 - 休まず動き続けるシステム
 
 ### 進化性
-- 記事のパフォーマンス（PV・クリック）をAIが自動観察
-- 人気コンテンツの傾向を学習し、翌日のテーマ選定に反映（Phase 2実装済み）
+- 記事のPV・クリックをAIが自動観察し、人気テーマを翌日のテーマ選定に反映（Phase 2）
+- **Google検索データ（GSC）を毎朝取得し、2つの視点で自動強化（Phase 4）**
+  - 高impression・低CTRの記事 → Claudeがタイトル改善案を3候補生成・Supabaseに保存
+  - 検索1〜10位だが専用記事がないキーワード → 翌朝の記事テーマに自動注入
 - 「好みを当てる編集長」エンジン
 
 ### 事業性
@@ -52,6 +54,7 @@
 | スクレイピング | Playwright（JS描画あり） + Cheerio（静的HTML） + RSS |
 | X自動投稿 | twitter-api-v2（Pay Per Use） |
 | アクセス解析 | Google Analytics 4 |
+| 検索データ取得 | Google Search Console API（googleapis） |
 
 ---
 
@@ -59,8 +62,13 @@
 
 ```
 GitHub Actions（平日毎朝7時JST）
+  [0] GSC最適化（Google Search Console API）
+      - 高impression・低CTRの記事タイトル改善案をHaikuが生成 → gsc_suggestionsに保存
+      - 1〜10位だがカバー記事がないキーワード（ギャップクエリ）を検出
   [1] スクレイパー（官公庁12サイト収集）
   [2] 直近30件の記事タイトルを取得（重複防止）
+      + GSCギャップクエリを最優先テーマとして注入
+      + 直近30日PV上位タグを優先テーマとして追加
   [3] Sonnet：記事本文 + SEOメタ + ツイート文を同時生成
   [4] Supabaseに保存 → VercelがISR自動更新
   [5] X API v2でツイート投稿
@@ -77,6 +85,7 @@ Supabase
   - analytics（PV・クリック・アフィリエイトクリック）
   - affiliates（アフィリエイトリンク）
   - topics_config（テーマ優先度）
+  - gsc_suggestions（タイトル改善候補・GSCデータ付き）
 ```
 
 ---
@@ -147,6 +156,13 @@ Supabase
   - /api/affiliate-click でクリック追跡→A8リダイレクト
   - A8承認済み5件登録（KANBEI SIGN・弥生会計 Next・MFクラウド会計・MF会社設立・アガルート行政書士講座）
   - 残り承認待ちは is_active=true + a8_link 更新で即反映
+
+### Phase 4：GSC連動 進化エンジン強化（2026年5月13日・完了）
+
+- [x] Google Search Console API 連携（googleapis・サービスアカウント認証）
+- [x] 高impression・低CTR記事の自動検出 → Haiku がタイトル改善案3候補を生成 → `gsc_suggestions` テーブルに保存
+- [x] 検索1〜10位のギャップクエリ自動検出 → 翌朝の記事テーマに最優先注入
+- [x] GSCデータ未取得時は自動スキップ（パイプライン継続）
 
 ### UI/デザイン改善（2026年5月12日）
 
