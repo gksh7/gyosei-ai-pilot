@@ -40,9 +40,20 @@ export async function runGscOptimizer(): Promise<string[]> {
 
   const gsc = createGscClient()
 
-  const [pageRows, queryRows, articlesResult] = await Promise.all([
-    fetchPageRows(gsc),
-    fetchQueryRows(gsc),
+  let pageRows, queryRows
+  try {
+    ;[pageRows, queryRows] = await Promise.all([fetchPageRows(gsc), fetchQueryRows(gsc)])
+  } catch (err: unknown) {
+    const status = (err as { status?: number; code?: number }).status ?? (err as { status?: number; code?: number }).code
+    if (status === 403) {
+      console.warn('⚠️  GSC API 403: サービスアカウントにSearch Console権限がありません。スキップ。')
+    } else {
+      console.error('❌ GSC API エラー:', err)
+    }
+    return []
+  }
+
+  const [articlesResult] = await Promise.all([
     supabase.from('articles').select('id, slug, title, tags'),
   ])
 
