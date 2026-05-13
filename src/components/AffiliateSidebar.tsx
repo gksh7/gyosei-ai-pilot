@@ -45,8 +45,11 @@ export default function AffiliateSidebar({
                 href={`/api/affiliate-click?id=${affiliate.id}${articleId ? `&article_id=${articleId}` : ""}`}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="block p-4 bg-amber-50 border border-amber-200 rounded-xl hover:border-amber-400 hover:shadow-sm transition-all"
+                className="relative block p-4 pr-8 bg-amber-50 border border-amber-200 rounded-xl hover:bg-amber-100 hover:border-amber-400 hover:shadow-md hover:scale-105 transition-all duration-200 cursor-pointer"
               >
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="hidden md:block absolute top-3 right-3 text-amber-700" aria-hidden="true">
+                  <path d="M7 17L17 7M7 7h10v10" />
+                </svg>
                 <p className="text-base font-semibold text-gray-800">{affiliate.service_name}</p>
                 {affiliate.description && (
                   <p className="text-xs text-gray-500 mt-1 leading-relaxed">{affiliate.description}</p>
