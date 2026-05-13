@@ -13,6 +13,7 @@ export type Article = {
   source_ids: string[] | null
   status: 'draft' | 'published'
   og_image_url: string | null
+  faq: { question: string; answer: string }[] | null
   created_at: string
   updated_at: string
 }

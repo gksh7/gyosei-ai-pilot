@@ -141,6 +141,18 @@ export default async function ArticlePage({
     ...(article.og_image_url && { image: article.og_image_url }),
   };
 
+  const faqJsonLd = article.faq && article.faq.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: article.faq.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: { "@type": "Answer", text: item.answer },
+        })),
+      }
+    : null;
+
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -155,6 +167,9 @@ export default async function ArticlePage({
     <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      {faqJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      )}
       <PageTracker articleId={article.id} />
       <Breadcrumb items={[{ label: "トップ", href: "/" }, { label: "記事一覧", href: "/articles" }, { label: article.title }]} />
       {/* ヘッダー行：記事タイトルエリア ＋ デスクトップ「関連サービス」h2 */}
@@ -200,6 +215,26 @@ export default async function ArticlePage({
         className="prose prose-gray max-w-none leading-loose"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
+
+      {article.faq && article.faq.length > 0 && (
+        <div className="mt-10 pt-6 border-t border-gray-200">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">よくある質問</h2>
+          <dl className="space-y-4">
+            {article.faq.map((item, i) => (
+              <div key={i} className="bg-gray-50 rounded-xl p-5">
+                <dt className="font-semibold text-gray-800 mb-2 flex gap-2">
+                  <span className="text-blue-600 shrink-0">Q.</span>
+                  {item.question}
+                </dt>
+                <dd className="text-gray-700 leading-relaxed flex gap-2">
+                  <span className="text-gray-400 shrink-0">A.</span>
+                  {item.answer}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
 
       {sources.length > 0 && (
         <div className="mt-10 pt-6 border-t border-gray-200">

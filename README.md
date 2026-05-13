@@ -69,9 +69,10 @@ GitHub Actions（平日毎朝7時JST）
   [2] 直近30件の記事タイトルを取得（重複防止）
       + GSCギャップクエリを最優先テーマとして注入
       + 直近30日PV上位タグを優先テーマとして追加
-  [3] Sonnet：記事本文 + SEOメタ + ツイート文を同時生成
+  [3] Sonnet：記事本文 + SEOメタ + ツイート文 + FAQ（Q&A 3件）を同時生成
   [4] Supabaseに保存 → VercelがISR自動更新
-  [5] X API v2でツイート投稿
+  [5] Google Indexing API でURLをGoogleに即時通知
+  [6] X API v2でツイート投稿
 
 Vercel（Next.js App Router）
   - 記事一覧ページ（10件/ページ・ページネーション）
@@ -80,7 +81,7 @@ Vercel（Next.js App Router）
   - 診断API（/api/diagnosis）
 
 Supabase
-  - articles（記事）
+  - articles（記事・faq: jsonb カラム含む）
   - sources（スクレイプ対象・12サイト）
   - analytics（PV・クリック・アフィリエイトクリック）
   - affiliates（アフィリエイトリンク）
@@ -164,6 +165,13 @@ Supabase
 - [x] 検索1〜10位のギャップクエリ自動検出 → 翌朝の記事テーマに最優先注入
 - [x] GSCデータ未取得時は自動スキップ（パイプライン継続）
 
+### Phase 5：SEO強化・セキュリティ・プロンプト改善（2026年5月14日・完了）
+
+- [x] **Supabase RLS 有効化** — 全テーブルにRow-Level Securityを設定。パイプラインをservice_role keyに切り替え
+- [x] **Google Indexing API** — 記事公開直後にURLをGoogleへ即時通知（`scripts/indexing-client.ts`）
+- [x] **FAQPage JSON-LD** — Claudeが記事生成時にQ&A 3件を同時生成。記事ページに構造化データ出力＋「よくある質問」UI表示。Googleリッチリザルト対象
+- [x] **記事生成プロンプト改善** — 不適切テーマ（風俗・わいせつ）の禁止、タイトル固定パターンの解消、最新ニュース起点の記事生成に変更
+
 ### UI/デザイン改善（2026年5月12日）
 
 - [x] 人気記事ランキングバッジ：1位ゴールド・2位シルバー・3位ブロンズ・4位グレーの丸バッジ
@@ -190,8 +198,10 @@ Supabase
 - Google Search Console：登録・所有権確認済み・サイトマップ送信済み ✅
 - サイトマップ（/sitemap.xml）：静的ページ + 全記事・1時間更新 ✅
 - robots.txt：全クローラー許可・/api/ 除外 ✅
-- JSON-LD構造化データ：WebSite・CollectionPage・ItemList・NewsArticle・WebPage・BreadcrumbList ✅
-- 記事生成時にClaudeが同時生成：SEOタイトル・メタdescription・タグ・ビッグワード ✅
+- JSON-LD構造化データ：WebSite・CollectionPage・ItemList・NewsArticle・WebPage・BreadcrumbList・**FAQPage** ✅
+- FAQPage JSON-LD：記事ごとにQ&A 3件を自動生成・Googleリッチリザルト（展開表示）対象 ✅
+- Google Indexing API：記事公開直後にURLをGoogleへ即時通知 ✅
+- 記事生成時にClaudeが同時生成：SEOタイトル・メタdescription・タグ・ビッグワード・FAQ ✅
 
 ---
 
