@@ -41,7 +41,7 @@ export function ArticleList({ articles }: { articles: Article[] }) {
         <Link
           key={article.id}
           href={`/articles/${article.slug}`}
-          className="article-animate block bg-white rounded-xl border border-gray-300 p-5 hover:border-blue-400 hover:shadow-sm transition-all"
+          className="article-animate block bg-white rounded-xl border border-gray-300 p-5 hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
           style={{ animationDelay: `${i * 0.07}s` }}
         >
           <div className="flex gap-2 mb-2 flex-wrap">
@@ -51,9 +51,9 @@ export function ArticleList({ articles }: { articles: Article[] }) {
               </span>
             ))}
           </div>
-          <h2 className="text-base font-semibold text-gray-900 mb-1.5 leading-snug">
+          <h3 className="text-lg font-semibold text-gray-900 mb-1.5 leading-snug">
             {article.title}
-          </h2>
+          </h3>
           {article.summary && (
             <p className="text-gray-600 text-sm leading-relaxed">{article.summary}</p>
           )}

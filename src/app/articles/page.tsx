@@ -122,7 +122,7 @@ export default async function ArticlesPage({
               <Link
                 key={article.id}
                 href={`/articles/${article.slug}`}
-                className="block bg-white rounded-xl border border-gray-300 p-5 hover:border-blue-400 hover:shadow-sm transition-all"
+                className="block bg-white rounded-xl border border-gray-300 p-5 hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
               >
                 <div className="flex gap-2 mb-2 flex-wrap">
                   {article.tags?.slice(0, 3).map((tag: string) => (
@@ -134,9 +134,9 @@ export default async function ArticlesPage({
                     </span>
                   ))}
                 </div>
-                <h2 className="text-base font-semibold text-gray-900 mt-3 mb-1.5 leading-snug">
+                <h3 className="text-lg font-semibold text-gray-900 mt-3 mb-1.5 leading-snug">
                   {article.title}
-                </h2>
+                </h3>
                 {article.summary && (
                   <p className="text-gray-600 text-sm leading-relaxed">
                     {article.summary}

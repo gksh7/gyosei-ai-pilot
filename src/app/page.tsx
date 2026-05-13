@@ -198,7 +198,7 @@ export default async function HomePage({
             <div className="flex justify-center sm:block">
               <Link
                 href="/diagnosis"
-                className="diagnosis-btn inline-flex items-center gap-2 text-base sm:text-xl font-bold px-6 sm:px-9 py-3 sm:py-3.5 rounded-full transition-all duration-200 hover:scale-105"
+                className="diagnosis-btn inline-flex items-center gap-2 text-base sm:text-xl font-bold px-6 sm:px-9 py-3 sm:py-3.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
                 style={{ fontFamily: "var(--font-noto-sans-jp), sans-serif" }}
               >
                 コンプライアンス診断を始める
@@ -230,7 +230,7 @@ export default async function HomePage({
                   <Link
                     key={article.id}
                     href={`/articles/${article.slug}`}
-                    className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm transition-all"
+                    className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <span

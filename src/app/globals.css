@@ -39,13 +39,18 @@ body {
 }
 
 .prose h2 {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
   margin-top: 46px;
   margin-bottom: 10px;
   border-left: 4px solid var(--color-gray-900);
   padding-left: 10px;
   line-height: 1.4;
+}
+
+/* カードホバー拡大（Tailwind任意値のフォールバック） */
+*:hover.hover\:scale-\[1\.02\] {
+  transform: scale(1.02);
 }
 
 @keyframes article-slide-up {

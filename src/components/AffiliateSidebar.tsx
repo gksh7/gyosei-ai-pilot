@@ -23,7 +23,7 @@ export default function AffiliateSidebar({
           <p className="text-xl font-bold mb-4">あなたの会社は大丈夫？</p>
           <Link
             href="/diagnosis"
-            className="diagnosis-btn inline-flex items-center justify-center gap-1.5 w-full text-base font-bold px-3 py-3 rounded-full transition-all duration-200 hover:scale-105"
+            className="diagnosis-btn inline-flex items-center justify-center gap-1.5 w-full text-base font-bold px-3 py-3 rounded-full transition-all duration-200 hover:scale-[1.02]"
           >
             コンプライアンス診断を始める
             <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -45,7 +45,7 @@ export default function AffiliateSidebar({
                 href={`/api/affiliate-click?id=${affiliate.id}${articleId ? `&article_id=${articleId}` : ""}`}
                 target="_blank"
                 rel="noopener noreferrer sponsored"
-                className="relative block p-4 pr-8 bg-amber-50 border border-amber-200 rounded-xl hover:bg-amber-100 hover:border-amber-400 hover:shadow-md hover:scale-105 transition-all duration-200 cursor-pointer"
+                className="relative block p-4 pr-8 bg-amber-50 border border-amber-200 rounded-xl hover:bg-amber-100 hover:border-amber-400 hover:shadow-md hover:scale-[1.02] transition-all duration-200 cursor-pointer"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="hidden md:block absolute top-3 right-3 text-amber-700" aria-hidden="true">
                   <path d="M7 17L17 7M7 7h10v10" />

@@ -185,7 +185,7 @@ export default async function ArticlePage({
               </span>
             ))}
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 leading-snug mb-3">
+          <h1 className="text-[27px] md:text-[30px] font-bold text-gray-900 leading-snug mb-3">
             {article.title}
           </h1>
           <time dateTime={article.created_at} className="text-sm text-gray-400">
@@ -262,7 +262,7 @@ export default async function ArticlePage({
             {prev && (
               <Link
                 href={`/articles/${prev.slug}`}
-                className="flex flex-col gap-1 p-4 bg-white border border-gray-300 rounded-xl hover:border-blue-400 hover:shadow-sm transition-all h-full"
+                className="flex flex-col gap-1 p-4 bg-white border border-gray-300 rounded-xl hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200 h-full"
               >
                 <span className="text-xs text-gray-400">← 前の記事</span>
                 <span className="text-sm font-medium text-gray-700 leading-snug line-clamp-2">{prev.title}</span>
@@ -273,7 +273,7 @@ export default async function ArticlePage({
             {next && (
               <Link
                 href={`/articles/${next.slug}`}
-                className="flex flex-col gap-1 p-4 bg-white border border-gray-300 rounded-xl hover:border-blue-400 hover:shadow-sm transition-all text-right h-full"
+                className="flex flex-col gap-1 p-4 bg-white border border-gray-300 rounded-xl hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200 text-right h-full"
               >
                 <span className="text-xs text-gray-400">次の記事 →</span>
                 <span className="text-sm font-medium text-gray-700 leading-snug line-clamp-2">{next.title}</span>
@@ -297,7 +297,7 @@ export default async function ArticlePage({
       </div>
       <Link
         href="/diagnosis"
-        className="diagnosis-btn inline-flex items-center gap-2 text-xl font-bold px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-105 shrink-0"
+        className="diagnosis-btn inline-flex items-center gap-2 text-xl font-bold px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-[1.02] shrink-0"
       >
         コンプライアンス診断を始める
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
