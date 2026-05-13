@@ -3,6 +3,7 @@ import { scrapeAll } from './scraper'
 import { generateArticle } from './generator'
 import { postToX } from './poster'
 import { runGscOptimizer } from './gsc-optimizer'
+import { notifyIndexing } from './indexing-client'
 
 async function run() {
   console.log('🚀 パイプライン開始:', new Date().toLocaleString('ja-JP'))
@@ -73,7 +74,15 @@ async function run() {
   }
   console.log('✅ 記事保存完了:', data.id)
 
-  // 5. X投稿
+  // 5. Google Indexing API通知
+  const articleUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/articles/${data.slug}`
+  try {
+    await notifyIndexing(articleUrl)
+  } catch (err) {
+    console.error('⚠️ Indexing API通知失敗（パイプラインは続行）:', (err as Error).message)
+  }
+
+  // 6. X投稿
   const tweetId = await postToX(data)
   if (tweetId) {
     await supabase
