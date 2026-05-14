@@ -54,6 +54,19 @@ export default function RootLayout({
               <span className="text-gray-300 select-none">|</span>
               <a href="/contact" className="hover:text-gray-700 transition-colors">お問い合わせ</a>
             </nav>
+            <div className="flex justify-center mb-3">
+              <a
+                href="https://x.com/GyoseiAIPilot"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X (Twitter)"
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+            </div>
             © 2026 行政書士AI Pilot
           </div>
         </footer>
