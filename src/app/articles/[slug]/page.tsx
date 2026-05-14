@@ -58,7 +58,7 @@ async function getAdjacentArticles(createdAt: string): Promise<{ prev: AdjacentA
   return { prev: prevData ?? null, next: nextData ?? null };
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.gyosei-ai-pilot.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gyosei-ai-pilot.com";
 
 export async function generateMetadata({
   params,
