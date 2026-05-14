@@ -8,7 +8,7 @@ import PageTracker from "./PageTracker";
 import { getMatchingAffiliates } from "@/lib/affiliates";
 import AffiliateSidebar from "@/components/AffiliateSidebar";
 
-export const revalidate = 3600;
+export const revalidate = 3600; // ISR: 1h
 
 async function getArticle(slug: string): Promise<Article | null> {
   const { data, error } = await supabase
