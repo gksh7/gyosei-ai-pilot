@@ -12,7 +12,7 @@ export const contentType = 'image/png'
 const budouxParser = loadDefaultJapaneseParser()
 
 // 漢字/仮名 ↔ ASCII/数字の境界でチャンクをさらに細かく分割する
-// 例: '行政書士法2026年改正の' → ['行政書士法', '2026', '年改正の']
+// 例: '行政書士法2026年改正の' → ['行政書士法', '2026年', '改正の']
 function subSplitChunk(chunk: string): string[] {
   if (chunk.length <= 4) return [chunk]
   const result: string[] = []
@@ -22,15 +22,27 @@ function subSplitChunk(chunk: string): string[] {
   for (const char of chunk) {
     const isAscii = /[0-9a-zA-Z]/.test(char)
     if (current.length > 0 && isAscii !== prevIsAscii) {
-      result.push(current)
-      current = char
+      if (prevIsAscii && /[年月日時分秒週]/.test(char)) {
+        // 数字+助数詞はくっつけて直後で分割（例: 2026年、75年、3月）
+        current += char
+        result.push(current)
+        current = ''
+      } else {
+        result.push(current)
+        current = char
+      }
     } else {
       current += char
     }
     prevIsAscii = isAscii
+    // ：や。はフレーズの区切りなので直後で分割する
+    if (/[：。]/.test(char) && current.length > 0) {
+      result.push(current)
+      current = ''
+    }
   }
   if (current) result.push(current)
-  return result
+  return result.filter(s => s.length > 0)
 }
 
 function splitTitle(title: string, targetCharsPerLine: number = 12): string[] {
@@ -132,9 +144,6 @@ export default async function Image({
             )}
           </div>
 
-          <div style={{ color: '#ffffff', fontSize: '18px', fontWeight: 400, fontFamily: 'NotoSansJP', marginTop: 'auto', marginBottom: '30px' }}>
-            gyosei-ai-pilot.com
-          </div>
         </div>
       </div>
     ),
