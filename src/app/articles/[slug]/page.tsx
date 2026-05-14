@@ -92,6 +92,9 @@ export async function generateMetadata({
       title,
       description,
     },
+    other: {
+      "twitter:url": url,
+    },
   };
 }
 

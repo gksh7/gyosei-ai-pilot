@@ -12,6 +12,7 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gyosei-ai-pilot.com"),
   title: {
     default: "行政書士AI Pilot｜2026法改正ナビ",
     template: "%s | 行政書士AI Pilot",
