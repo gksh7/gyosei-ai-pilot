@@ -33,7 +33,7 @@ export function ArticleList({ articles }: { articles: Article[] }) {
 
     items.forEach((item) => observer.observe(item));
     return () => observer.disconnect();
-  }, []);
+  }, [articles]);
 
   return (
     <div ref={ref} className="space-y-4">
