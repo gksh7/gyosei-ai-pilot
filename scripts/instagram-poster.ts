@@ -34,6 +34,9 @@ export async function postToInstagram(article: {
     }
     console.log('📦 Instagramコンテナ作成:', container.id)
 
+    // コンテナの処理完了を待機
+    await waitForContainer(container.id, token)
+
     // 2. 投稿
     const publishRes = await fetch(`${IG_API}/${accountId}/media_publish`, {
       method: 'POST',
@@ -53,5 +56,16 @@ export async function postToInstagram(article: {
   } catch (err) {
     console.error('❌ Instagram投稿エラー:', err)
     return null
+  }
+}
+
+async function waitForContainer(containerId: string, token: string, maxRetries = 10) {
+  for (let i = 0; i < maxRetries; i++) {
+    await new Promise(r => setTimeout(r, 3000))
+    const res = await fetch(`${IG_API}/${containerId}?fields=status_code&access_token=${token}`)
+    const data = await res.json()
+    if (data.status_code === 'FINISHED') return
+    if (data.status_code === 'ERROR') throw new Error('コンテナ処理エラー')
+    console.log(`⏳ コンテナ処理中... (${i + 1}/${maxRetries})`)
   }
 }

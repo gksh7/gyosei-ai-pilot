@@ -48,11 +48,12 @@
 | フロントエンド | Next.js 16 + Tailwind CSS v4 |
 | ホスティング | Vercel |
 | データベース | Supabase（PostgreSQL・東京リージョン） |
-| 定期実行 | GitHub Actions（平日毎朝7時JST） |
+| 定期実行 | GitHub Actions（毎日19時JST） |
 | AI（記事生成） | Claude API - claude-sonnet-4-6 |
 | AI（診断・ロジック系） | Claude API - claude-haiku-4-5 |
 | スクレイピング | Playwright（JS描画あり） + Cheerio（静的HTML） + RSS |
 | X自動投稿 | twitter-api-v2（Pay Per Use） |
+| Instagram自動投稿 | Instagram Graph API v21.0 |
 | アクセス解析 | Google Analytics 4 |
 | 検索データ取得 | Google Search Console API（googleapis） |
 
@@ -61,7 +62,7 @@
 ## システムアーキテクチャ
 
 ```
-GitHub Actions（平日毎朝7時JST）
+GitHub Actions（毎日19時JST）
   [0] GSC最適化（Google Search Console API）
       - 高impression・低CTRの記事タイトル改善案をHaikuが生成 → gsc_suggestionsに保存
       - 1〜10位だがカバー記事がないキーワード（ギャップクエリ）を検出
@@ -73,6 +74,7 @@ GitHub Actions（平日毎朝7時JST）
   [4] Supabaseに保存 → VercelがISR自動更新
   [5] Google Indexing API でURLをGoogleに即時通知
   [6] X API v2でツイート投稿
+  [7] Instagram Graph API でフィード投稿（OGP画像＋キャプション）
 
 Vercel（Next.js App Router）
   - 記事一覧ページ（10件/ページ・ページネーション）
@@ -172,6 +174,14 @@ Supabase
 - [x] **FAQPage JSON-LD** — Claudeが記事生成時にQ&A 3件を同時生成。記事ページに構造化データ出力＋「よくある質問」UI表示。Googleリッチリザルト対象
 - [x] **記事生成プロンプト改善** — 不適切テーマ（風俗・わいせつ）の禁止、タイトル固定パターンの解消、最新ニュース起点の記事生成に変更
 
+### Phase 6：Instagram自動投稿（2026年5月16日・完了）
+
+- [x] **Instagram Graph API 連携**（`scripts/instagram-poster.ts`）
+  - 毎朝の記事生成後、OGP画像をフィード投稿として自動公開
+  - キャプション：ツイート文＋プロフィールリンク誘導＋ハッシュタグ（#行政書士 #2026年改正 #法改正 #コンプライアンス）
+  - コンテナ処理完了をポーリング確認してから公開（`waitForContainer`）
+  - GitHub Actions に `INSTAGRAM_ACCESS_TOKEN`・`INSTAGRAM_ACCOUNT_ID` シークレット追加済み
+
 ---
 
 ## SEO設計
@@ -193,4 +203,8 @@ Supabase
 
 ## X（Twitter）アカウント
 
-[@GyoseiAIPilot](https://x.com/GyoseiAIPilot) — 毎朝7時に自動投稿稼働中（2026年5月9日〜）
+[@GyoseiAIPilot](https://x.com/GyoseiAIPilot) — 毎日19時に自動投稿稼働中（2026年5月9日〜）
+
+## Instagramアカウント
+
+[@gyosei_ai_pilot](https://www.instagram.com/gyosei_ai_pilot/) — 毎日19時に記事OGP画像を自動フィード投稿（2026年5月16日〜）
