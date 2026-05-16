@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 const PER_PAGE = 10;
 
