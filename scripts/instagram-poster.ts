@@ -14,8 +14,7 @@ export async function postToInstagram(article: {
   }
 
   const imageUrl = `${siteUrl}/articles/${article.slug}/opengraph-image`
-  const articleUrl = `${siteUrl}/articles/${article.slug}`
-  const caption = `${article.tweet_text}\n\n${articleUrl}\n\n#行政書士 #2026年改正 #法改正 #コンプライアンス`
+  const caption = `${article.tweet_text}\n\n🔗 記事全文はプロフィールのリンクから\n\n#行政書士 #2026年改正 #法改正 #コンプライアンス`
 
   try {
     // 1. メディアコンテナ作成
