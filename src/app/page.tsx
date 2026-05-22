@@ -231,9 +231,9 @@ export default async function HomePage({
 
       {/* 実務ガイド（ピラー記事・常に固定表示） */}
       {pillarArticles.length > 0 && (
-        <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-10 pb-2">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-lg font-bold text-gray-900">実務ガイド</span>
+        <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-10 pb-12">
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900">実務ガイド</h2>
             <span className="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full font-medium">いつでも読める</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
