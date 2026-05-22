@@ -36,6 +36,16 @@ export const dynamic = 'force-dynamic';
 
 const PER_PAGE = 10;
 
+async function getPillarArticles(): Promise<Article[]> {
+  const { data } = await supabase
+    .from("articles")
+    .select("*")
+    .eq("status", "published")
+    .like("slug", "pillar-%")
+    .order("created_at", { ascending: true })
+  return (data as Article[]) ?? []
+}
+
 async function getPopularArticles(limit = 4): Promise<Article[]> {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -120,9 +130,10 @@ export default async function HomePage({
 }) {
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10));
-  const [{ articles, total }, popularArticles, topAffiliates] = await Promise.all([
+  const [{ articles, total }, popularArticles, pillarArticles, topAffiliates] = await Promise.all([
     getArticles(page),
     getPopularArticles(),
+    getPillarArticles(),
     getTopPageAffiliates(),
   ]);
   const totalPages = Math.ceil(total / PER_PAGE);
@@ -217,6 +228,37 @@ export default async function HomePage({
           2026年改正行政書士法｜最新コンプライアンス情報
         </h1>
       </div>
+
+      {/* 実務ガイド（ピラー記事・常に固定表示） */}
+      {pillarArticles.length > 0 && (
+        <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-10 pb-2">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-lg font-bold text-gray-900">実務ガイド</span>
+            <span className="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full font-medium">いつでも読める</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {pillarArticles.map((article) => (
+              <Link
+                key={article.id}
+                href={`/articles/${article.slug}`}
+                className="flex flex-col gap-2 bg-white rounded-xl border border-amber-200 p-4 hover:border-amber-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
+              >
+                <div className="flex gap-1.5 flex-wrap">
+                  {article.tags?.slice(0, 1).map((tag: string) => (
+                    <span key={tag} className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full truncate">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-3 flex-1">
+                  {article.title}
+                </h3>
+                <span className="text-xs text-amber-600 font-medium mt-auto">詳しく読む →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* 人気記事（フルワイド背景・中身は1010px） */}
       {popularArticles.length >= 2 && (
