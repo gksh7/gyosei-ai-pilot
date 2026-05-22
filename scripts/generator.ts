@@ -50,7 +50,7 @@ export async function generateArticle(scrapedContent: ScrapedContent[], recentTi
 - コアキーワード: ${TARGET_KEYWORDS.required.join('、')}
 - 関連ビッグワード（内容に合うものを2〜3語）: ${TARGET_KEYWORDS.bigWords.join('、')}
 - コンプライアンス関連（内容に合うものを1〜2語）: ${TARGET_KEYWORDS.compliance.join('、')}
-- h2見出し（2〜3個）にキーワードを入れること
+- h2見出し（3〜4個）にキーワードを入れること
 - 冒頭100字以内にコアキーワードを最低1語配置すること
 - tagsには記事で扱ったキーワードを含めること（3〜5個）`,
     messages: [{
@@ -64,7 +64,7 @@ ${sourceText}
 {
   "title": "記事タイトル（30字以内・収集情報の具体的なニューストピックを前面に出す・固定パターン禁止）",
   "slug": "url-safe-english-slug",
-  "content": "記事本文HTML（<h2><p>タグ使用・1000〜1500字・キーワードを見出しと冒頭に配置）",
+  "content": "記事本文HTML（<h2><p>タグ使用・2500〜3000字・キーワードを見出しと冒頭に配置・h2は3〜4個・各セクションを具体的に肉付けすること）",
   "summary": "要約文（100字以内・必須キーワードを含む）",
   "seo_title": "SEOタイトル（32字以内・検索意図に合わせビッグワードを先頭寄りに）",
   "seo_description": "メタディスクリプション（120字以内・キーワードと行動喚起を含む）",

@@ -9,7 +9,8 @@
     "lint": "eslint",
     "pipeline": "tsx scripts/pipeline.ts",
     "seed": "tsx scripts/seed-sources.ts",
-    "repost": "tsx scripts/repost-today.ts"
+    "repost": "tsx scripts/repost-today.ts",
+    "pillar": "tsx scripts/pillar-generator.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.93.0",
