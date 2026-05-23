@@ -83,7 +83,14 @@ ${sourceText}
   const jsonMatch = text.match(/\{[\s\S]*\}/)
   if (!jsonMatch) throw new Error('JSON生成失敗')
 
-  const article = JSON.parse(jsonMatch[0])
+  // JSON文字列リテラル内の制御文字をエスケープ（Claude出力にリテラル改行が混入する場合の対策）
+  const sanitized = jsonMatch[0].replace(/"(?:[^"\\]|\\.)*"/g, (match) =>
+    match.replace(/[\x00-\x1F\x7F]/g, (char) => {
+      const escapes: { [key: string]: string } = { '\n': '\\n', '\r': '\\r', '\t': '\\t', '\f': '\\f', '\b': '\\b' }
+      return escapes[char] ?? `\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}`
+    })
+  )
+  const article = JSON.parse(sanitized)
   article.slug = `${article.slug}-${Date.now()}`
   article.status = 'published'
 
