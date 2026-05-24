@@ -206,6 +206,22 @@ export default function DiagnosisPage() {
           ※ {DIAGNOSIS_DISCLAIMER}
         </p>
 
+        <div className="bg-gray-900 rounded-xl p-5 text-white text-center">
+          <p className="text-sm font-semibold mb-1">毎日の法改正情報をXでチェック</p>
+          <p className="text-xs text-gray-400 mb-4">改正行政書士法の最新情報・対策記事を毎日19時に投稿しています</p>
+          <a
+            href="https://twitter.com/intent/follow?screen_name=GyoseiAIPilot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-white text-gray-900 text-sm font-bold px-5 py-2.5 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.735-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+            </svg>
+            @GyoseiAIPilot をフォロー
+          </a>
+        </div>
+
         <div className="flex gap-3">
           <button
             onClick={handleReset}
