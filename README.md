@@ -183,6 +183,13 @@ Supabase
   - コンテナ処理完了をポーリング確認してから公開（`waitForContainer`）
   - GitHub Actions に `INSTAGRAM_ACCESS_TOKEN`・`INSTAGRAM_ACCOUNT_ID` シークレット追加済み
 
+### Phase 7：SEO品質改善・コンテンツ戦略転換（2026年5月27日・完了）
+
+- [x] **E-E-A-T強化（/about）** — 運営者名を実在感のある「東京勤務ビジネス法務ライター」に変更、法務実務経験・背景を追記、Person JSON-LD 追加
+- [x] **リダイレクトエラー対策** — アフィリエイトリンクに `rel="nofollow"` を追加し、Google のリダイレクトエラー検出を防止
+- [x] **Indexing API 一括送信スクリプト** — `scripts/submit-all-to-indexing.ts` で全公開記事を一括通知、手動実行用 GitHub Actions ワークフロー（`submit-indexing.yml`）追加
+- [x] **記事生成戦略の転換** — GSC検索クエリ分析結果を反映し「実務Q&A形式」を最優先フォーマットに変更。「補助金申請代行は違法か？」型の記事を積極生成するよう `PRIORITY_QUESTION_THEMES` を追加
+
 ---
 
 ## SEO設計
