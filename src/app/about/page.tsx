@@ -37,7 +37,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "東京勤務ビジネス法務ライター",
+    name: "東京在勤のビジネス法務ライター",
     jobTitle: "ビジネス法務ライター",
     description: "企業の法務・コンプライアンス実務に携わりながら、行政規制・法改正をビジネス視点で発信。",
     url: `${SITE_URL}/about`,
@@ -78,7 +78,7 @@ export default function AboutPage() {
                   ["サイト名", "行政書士AI Pilot｜2026法改正ナビ"],
                   ["URL", "https://gyosei-ai-pilot.com"],
                   ["開設日", "2026年4月"],
-                  ["運営者", "東京勤務ビジネス法務ライター"],
+                  ["運営者", "東京在勤のビジネス法務ライター"],
                   ["お問い合わせ", "お問い合わせページよりご連絡ください"],
                 ].map(([label, value]) => (
                   <tr key={label} className="border-b border-gray-100">
