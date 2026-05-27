@@ -25,21 +25,40 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "ホーム", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: "運営者情報", item: `${SITE_URL}/about` },
-  ],
-};
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "運営者情報", item: `${SITE_URL}/about` },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "東京勤務ビジネス法務ライター",
+    jobTitle: "ビジネス法務ライター",
+    description: "企業の法務・コンプライアンス実務に携わりながら、行政規制・法改正をビジネス視点で発信。",
+    url: `${SITE_URL}/about`,
+    worksFor: {
+      "@type": "Organization",
+      name: "行政書士AI Pilot",
+      url: SITE_URL,
+    },
+  },
+];
 
 export default function AboutPage() {
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd[0]) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd[1]) }}
       />
       <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-4 pb-8 sm:pt-8">
         <Breadcrumb
@@ -59,7 +78,7 @@ export default function AboutPage() {
                   ["サイト名", "行政書士AI Pilot｜2026法改正ナビ"],
                   ["URL", "https://gyosei-ai-pilot.com"],
                   ["開設日", "2026年4月"],
-                  ["運営者", "AI Pilot Lab"],
+                  ["運営者", "東京勤務ビジネス法務ライター"],
                   ["お問い合わせ", "お問い合わせページよりご連絡ください"],
                 ].map(([label, value]) => (
                   <tr key={label} className="border-b border-gray-100">
@@ -83,6 +102,22 @@ export default function AboutPage() {
                 ))}
               </tbody>
             </table>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-bold text-gray-900 mb-3">運営者について</h2>
+            <p>
+              東京都内の企業にて法務・コンプライアンス関連業務に従事。許認可申請・行政手続きの実務サポートを通じて、
+              中小企業が「知らないうちに法律違反」に陥るケースを数多く目にしてきました。
+            </p>
+            <p className="mt-2">
+              2026年の行政書士法改正を機に、法改正情報が現場に届くまでのタイムラグを縮めたいという思いからこのサイトを開設。
+              AIを活用して官公庁情報を毎日収集・整理し、ビジネス実務に直結する形で発信しています。
+            </p>
+            <p className="mt-2">
+              行政書士試験の受験経験があり、行政法・会社法を中心に学習。資格者ではありませんが、
+              実務と学習の両面から法規制をわかりやすく解説することを心がけています。
+            </p>
           </section>
 
           <section>
