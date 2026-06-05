@@ -95,8 +95,11 @@ async function getTopPageAffiliates(): Promise<Affiliate[]> {
     .select("*")
     .eq("is_active", true)
     .order("created_at", { ascending: true })
-    .limit(3)
-  return (data as Affiliate[]) ?? []
+    .limit(10)
+  const all = (data as Affiliate[]) ?? []
+  const agaroot = all.filter(a => a.service_name === 'アガルート行政書士講座')
+  const others = all.filter(a => a.service_name !== 'アガルート行政書士講座')
+  return [...agaroot, ...others].slice(0, 3)
 }
 
 async function getArticles(page: number): Promise<{ articles: Article[]; total: number }> {
