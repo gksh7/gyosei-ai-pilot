@@ -50,14 +50,17 @@ export default function AffiliateSidebar({
                 href={`/api/affiliate-click?id=${agaroot.id}${articleId ? `&article_id=${articleId}` : ""}`}
                 target="_blank"
                 rel="nofollow noopener noreferrer sponsored"
-                className="relative block p-4 bg-gradient-to-br from-yellow-50 to-amber-100 border-2 border-amber-400 rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+                className="relative block p-4 pr-8 bg-gradient-to-br from-yellow-50 to-amber-100 border-2 border-amber-400 rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer"
               >
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="hidden md:block absolute top-3 right-3 text-amber-700" aria-hidden="true">
+                  <path d="M7 17L17 7M7 7h10v10" />
+                </svg>
                 <span className="inline-block text-[10px] font-bold text-white bg-amber-500 rounded-full px-2 py-0.5 mb-2">2026年 新講座</span>
                 <p className="text-sm font-bold text-gray-900 leading-snug">{agaroot.service_name}</p>
                 {agaroot.description && (
                   <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">{agaroot.description}</p>
                 )}
-                <span className="text-xs text-amber-700 font-semibold mt-2 block">詳細を見る →</span>
+                <span className="md:hidden text-xs text-amber-700 font-semibold mt-2 block">詳細を見る →</span>
               </a>
             )}
 
