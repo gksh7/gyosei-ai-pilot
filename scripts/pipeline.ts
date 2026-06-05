@@ -2,7 +2,6 @@ import { supabase } from './supabase-client'
 import { scrapeAll } from './scraper'
 import { generateArticle } from './generator'
 import { postToX } from './poster'
-import { postToInstagram } from './instagram-poster'
 import { runGscOptimizer } from './gsc-optimizer'
 import { notifyIndexing } from './indexing-client'
 
@@ -91,9 +90,6 @@ async function run() {
       .update({ tweet_id: tweetId, tweet_posted_at: new Date().toISOString() })
       .eq('id', data.id)
   }
-
-  // 7. Instagram投稿
-  await postToInstagram(data)
 
   console.log('🎉 パイプライン完了')
 }
