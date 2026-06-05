@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Affiliate } from "@/lib/types";
 
+const AGAROOT_NAME = 'アガルート行政書士講座';
+
 export default function AffiliateSidebar({
   affiliates,
   articleId,
@@ -9,6 +11,9 @@ export default function AffiliateSidebar({
   articleId?: string;
 }) {
   if (affiliates.length === 0 && !articleId) return null;
+
+  const agaroot = affiliates.find(a => a.service_name === AGAROOT_NAME);
+  const others = affiliates.filter(a => a.service_name !== AGAROOT_NAME);
 
   return (
     <aside className="w-full md:w-52 md:shrink-0 mt-4 md:mt-0">
@@ -35,11 +40,28 @@ export default function AffiliateSidebar({
 
       {affiliates.length > 0 && (
         <div className="md:sticky md:top-[100px]">
-          {/* 記事ページではデスクトップh2を非表示（ヘッダー行に移動済み）、ホームでは表示 */}
           <h2 className={`text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-3 ${articleId ? 'md:hidden' : 'md:mb-1'}`}>関連サービス</h2>
           {!articleId && <p className="hidden md:block text-xs text-gray-400 mb-5">※広告を含む場合があります</p>}
           <div className="flex flex-col gap-3">
-            {affiliates.map((affiliate) => (
+
+            {/* アガルート：特別デザイン */}
+            {agaroot && (
+              <a
+                href={`/api/affiliate-click?id=${agaroot.id}${articleId ? `&article_id=${articleId}` : ""}`}
+                target="_blank"
+                rel="nofollow noopener noreferrer sponsored"
+                className="relative block p-4 bg-gradient-to-br from-yellow-50 to-amber-100 border-2 border-amber-400 rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+              >
+                <span className="inline-block text-[10px] font-bold text-white bg-amber-500 rounded-full px-2 py-0.5 mb-2">2026年 新講座</span>
+                <p className="text-sm font-bold text-gray-900 leading-snug">{agaroot.service_name}</p>
+                {agaroot.description && (
+                  <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">{agaroot.description}</p>
+                )}
+                <span className="text-xs text-amber-700 font-semibold mt-2 block">詳細を見る →</span>
+              </a>
+            )}
+
+            {others.map((affiliate) => (
               <a
                 key={affiliate.id}
                 href={`/api/affiliate-click?id=${affiliate.id}${articleId ? `&article_id=${articleId}` : ""}`}

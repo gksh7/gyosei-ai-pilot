@@ -214,6 +214,27 @@ export default async function ArticlePage({
         </div>
       )}
 
+      {/* アガルート インライン バナー */}
+      {affiliates.find(a => a.service_name === 'アガルート行政書士講座') && (() => {
+        const ag = affiliates.find(a => a.service_name === 'アガルート行政書士講座')!;
+        return (
+          <a
+            href={`/api/affiliate-click?id=${ag.id}&article_id=${article.id}`}
+            target="_blank"
+            rel="nofollow noopener noreferrer sponsored"
+            className="flex items-center gap-4 p-4 mb-8 bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-amber-400 rounded-xl hover:shadow-md hover:scale-[1.01] transition-all duration-200"
+          >
+            <div className="shrink-0 w-10 h-10 rounded-full bg-amber-400 flex items-center justify-center text-white font-bold text-lg">A</div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] font-bold text-amber-600 mb-0.5">PR｜2026年合格目標 新講座リリース</p>
+              <p className="text-sm font-bold text-gray-900 leading-snug">{ag.service_name}</p>
+              <p className="text-xs text-gray-500 mt-0.5 truncate">{ag.description}</p>
+            </div>
+            <span className="shrink-0 text-xs font-semibold text-amber-700 whitespace-nowrap">詳細 →</span>
+          </a>
+        );
+      })()}
+
       <div
         className="prose prose-gray max-w-none leading-loose"
         dangerouslySetInnerHTML={{ __html: article.content }}
