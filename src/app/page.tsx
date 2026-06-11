@@ -232,80 +232,8 @@ export default async function HomePage({
         </h1>
       </div>
 
-      {/* 実務ガイド（ピラー記事・常に固定表示） */}
-      {pillarArticles.length > 0 && (
-        <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-10 pb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900">実務ガイド</h2>
-            <span className="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full font-medium">いつでも読める</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {pillarArticles.map((article) => (
-              <Link
-                key={article.id}
-                href={`/articles/${article.slug}`}
-                className="flex flex-col gap-2 bg-white rounded-xl border border-amber-200 p-4 hover:border-amber-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
-              >
-                <div className="flex gap-1.5 flex-wrap">
-                  {article.tags?.slice(0, 1).map((tag: string) => (
-                    <span key={tag} className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full truncate">
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-                <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-3 flex-1">
-                  {article.title}
-                </h3>
-                <span className="text-xs text-amber-600 font-medium mt-auto">詳しく読む →</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 人気記事（フルワイド背景・中身は1010px） */}
-      {popularArticles.length >= 2 && (
-        <div className="w-full py-8 lg:py-10" style={{ backgroundColor: 'rgba(12, 36, 97, 0.03)' }}>
-          <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0">
-            <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-3">人気記事</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              {popularArticles.map((article, i) => {
-                const rankBg = ['#DAA520', '#A8A9AD', '#CD7F32', '#9CA3AF'][i] ?? '#9CA3AF'
-                return (
-                  <Link
-                    key={article.id}
-                    href={`/articles/${article.slug}`}
-                    className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <span
-                        className="w-7 h-7 rounded-full flex items-center justify-center text-base font-bold text-white shrink-0"
-                        style={{ backgroundColor: rankBg }}
-                      >
-                        {i + 1}
-                      </span>
-                      {article.tags?.[0] && (
-                        <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full truncate">
-                          #{article.tags[0]}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-3">
-                      {article.title}
-                    </h3>
-                    <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
-                      {formatDate(article.created_at)}
-                    </time>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* 最新記事 + サイドバー */}
-      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-16 pb-8">
+      <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-10 pb-8">
         <div className="flex flex-col md:flex-row gap-8 md:gap-9 lg:gap-14">
         <div className="flex-1 min-w-0">
           <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-1">最新記事</h2>
@@ -351,6 +279,78 @@ export default async function HomePage({
         <AffiliateSidebar affiliates={topAffiliates} />
         </div>
       </div>
+
+      {/* 人気記事（フルワイド背景・中身は1010px） */}
+      {popularArticles.length >= 2 && (
+        <div className="w-full py-8 lg:py-10" style={{ backgroundColor: 'rgba(12, 36, 97, 0.03)' }}>
+          <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0">
+            <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900 mb-3">人気記事</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {popularArticles.map((article, i) => {
+                const rankBg = ['#DAA520', '#A8A9AD', '#CD7F32', '#9CA3AF'][i] ?? '#9CA3AF'
+                return (
+                  <Link
+                    key={article.id}
+                    href={`/articles/${article.slug}`}
+                    className="block bg-white rounded-xl border border-gray-300 p-4 hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-base font-bold text-white shrink-0"
+                        style={{ backgroundColor: rankBg }}
+                      >
+                        {i + 1}
+                      </span>
+                      {article.tags?.[0] && (
+                        <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full truncate">
+                          #{article.tags[0]}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-900 leading-snug line-clamp-3">
+                      {article.title}
+                    </h3>
+                    <time dateTime={article.created_at} className="text-xs text-gray-400 mt-2 block">
+                      {formatDate(article.created_at)}
+                    </time>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 実務ガイド（ピラー記事・常に固定表示） */}
+      {pillarArticles.length > 0 && (
+        <div className="max-w-[1010px] mx-auto px-6 min-[1042px]:px-0 pt-10 pb-12">
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-xl [@media(min-width:1024px)]:text-2xl font-bold text-gray-900">実務ガイド</h2>
+            <span className="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full font-medium">いつでも読める</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {pillarArticles.map((article) => (
+              <Link
+                key={article.id}
+                href={`/articles/${article.slug}`}
+                className="flex flex-col gap-2 bg-white rounded-xl border border-amber-200 p-4 hover:border-amber-400 hover:shadow-sm hover:scale-[1.02] transition-all duration-200"
+              >
+                <div className="flex gap-1.5 flex-wrap">
+                  {article.tags?.slice(0, 1).map((tag: string) => (
+                    <span key={tag} className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full truncate">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-3 flex-1">
+                  {article.title}
+                </h3>
+                <span className="text-xs text-amber-600 font-medium mt-auto">詳しく読む →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
