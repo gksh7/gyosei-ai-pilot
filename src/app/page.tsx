@@ -276,7 +276,9 @@ export default async function HomePage({
             </>
           )}
         </div>
-        <AffiliateSidebar affiliates={topAffiliates} />
+        <div className="hidden md:block">
+          <AffiliateSidebar affiliates={topAffiliates} />
+        </div>
         </div>
       </div>
 
@@ -351,6 +353,11 @@ export default async function HomePage({
           </div>
         </div>
       )}
+
+      {/* 関連サービス（スマホのみ・実務ガイドの後＝一番下） */}
+      <div className="md:hidden max-w-[1010px] mx-auto px-6 pb-10">
+        <AffiliateSidebar affiliates={topAffiliates} />
+      </div>
     </div>
   );
 }
