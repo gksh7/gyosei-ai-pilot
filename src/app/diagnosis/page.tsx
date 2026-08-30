@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import ConsultCTA from "@/components/ConsultCTA";
 import { DIAGNOSIS_DISCLAIMER } from "@/lib/gyosei-law";
 import type { Affiliate } from "@/lib/types";
 
@@ -205,6 +206,8 @@ export default function DiagnosisPage() {
         <p className="text-xs text-gray-400 leading-relaxed px-1 pt-4">
           ※ {DIAGNOSIS_DISCLAIMER}
         </p>
+
+        <ConsultCTA source="diagnosis" context={`risk:${result.riskLevel}`} />
 
         <div className="bg-gray-900 rounded-xl p-5 text-white text-center">
           <p className="text-sm font-semibold mb-1">毎日の法改正情報をXでチェック</p>

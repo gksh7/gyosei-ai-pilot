@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useEffect, useRef, useState } from "react";
+import ConsultCTA from "@/components/ConsultCTA";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -247,6 +248,16 @@ export default function ChatWidget() {
                   <SendIcon />
                 </button>
               </div>
+              {messages.length > 2 && !loading && (
+                <div className="mt-1.5">
+                  <ConsultCTA
+                    key={messages.length}
+                    source="chat"
+                    context={[...messages].reverse().find((m) => m.role === "user")?.content.slice(0, 200)}
+                    compact
+                  />
+                </div>
+              )}
               <p className="mt-1.5 text-[10px] leading-tight text-gray-400">
                 AIによる回答です。正確性は保証されません。個別の判断は行政書士などの専門家にご相談ください。
               </p>

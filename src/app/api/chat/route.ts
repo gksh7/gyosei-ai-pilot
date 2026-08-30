@@ -1,9 +1,9 @@
-import { createHash } from "crypto";
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest } from "next/server";
 import { GYOSEI_LAW_CONTEXT } from "@/lib/gyosei-law";
 import { getArticlesIndex } from "@/lib/articles-index";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { clientIp, ipHash } from "@/lib/ip";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -55,17 +55,6 @@ ${GYOSEI_LAW_CONTEXT}
 ${indexText}`;
 }
 
-function clientIp(req: NextRequest): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return req.headers.get("x-real-ip") ?? "unknown";
-}
-
-function ipHash(ip: string): string {
-  const salt = process.env.ANTHROPIC_API_KEY ?? "gyosei";
-  return createHash("sha256").update(`${salt}:${ip}`).digest("hex").slice(0, 16);
-}
-
 /** 質問・回答を Supabase に記録（失敗してもチャットは止めない）。 */
 async function logChat(params: {
   question: string;
@@ -92,7 +81,7 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: "設定エラー" }, { status: 500 });
   }
 
-  const ip = clientIp(req);
+  const ip = clientIp(req.headers);
   if (rateLimited(ip)) {
     return Response.json(
       { error: "アクセスが集中しています。しばらく待ってからお試しください。" },
