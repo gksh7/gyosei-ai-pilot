@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Noto_Sans_JP } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
+import ChatWidget from "@/components/ChatWidget";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"] });
@@ -71,6 +72,7 @@ export default function RootLayout({
             © 2026 行政書士AI Pilot
           </div>
         </footer>
+        <ChatWidget />
       </body>
       <GoogleAnalytics gaId="G-KEFDKT6RHW" />
     </html>
