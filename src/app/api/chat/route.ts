@@ -1,7 +1,9 @@
+import { createHash } from "crypto";
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest } from "next/server";
 import { GYOSEI_LAW_CONTEXT } from "@/lib/gyosei-law";
 import { getArticlesIndex } from "@/lib/articles-index";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -59,6 +61,32 @@ function clientIp(req: NextRequest): string {
   return req.headers.get("x-real-ip") ?? "unknown";
 }
 
+function ipHash(ip: string): string {
+  const salt = process.env.ANTHROPIC_API_KEY ?? "gyosei";
+  return createHash("sha256").update(`${salt}:${ip}`).digest("hex").slice(0, 16);
+}
+
+/** 質問・回答を Supabase に記録（失敗してもチャットは止めない）。 */
+async function logChat(params: {
+  question: string;
+  answer: string;
+  turnCount: number;
+  ipHash: string;
+}): Promise<void> {
+  if (!supabaseAdmin) return;
+  try {
+    const { error } = await supabaseAdmin.from("chat_logs").insert({
+      question: params.question.slice(0, 2000),
+      answer: params.answer.slice(0, 8000),
+      turn_count: params.turnCount,
+      ip_hash: params.ipHash,
+    });
+    if (error) console.error("[chat] log insert failed:", error.message);
+  } catch (err) {
+    console.error("[chat] log error:", err);
+  }
+}
+
 export async function POST(req: NextRequest) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return Response.json({ error: "設定エラー" }, { status: 500 });
@@ -104,10 +132,13 @@ export async function POST(req: NextRequest) {
   const { text: indexText, count } = await getArticlesIndex();
   const systemPrompt = buildSystemPrompt(indexText, count);
 
+  const question = messages[messages.length - 1].content;
+  const hashedIp = ipHash(ip);
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
+      let answer = "";
       try {
         const anthropicStream = client.messages.stream({
           model: MODEL,
@@ -123,6 +154,7 @@ export async function POST(req: NextRequest) {
             event.type === "content_block_delta" &&
             event.delta.type === "text_delta"
           ) {
+            answer += event.delta.text;
             controller.enqueue(encoder.encode(event.delta.text));
           }
         }
@@ -133,6 +165,12 @@ export async function POST(req: NextRequest) {
         );
       } finally {
         controller.close();
+        void logChat({
+          question,
+          answer,
+          turnCount: messages.length,
+          ipHash: hashedIp,
+        });
       }
     },
   });

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { sendGAEvent } from "@next/third-parties/google";
 import { useEffect, useRef, useState } from "react";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -70,6 +71,11 @@ export default function ChatWidget() {
     setMessages([...next, { role: "assistant", content: "" }]);
     setInput("");
     setLoading(true);
+    try {
+      sendGAEvent("event", "chat_message", { turn: next.length });
+    } catch {
+      /* noop */
+    }
 
     try {
       const res = await fetch("/api/chat", {
@@ -143,7 +149,14 @@ export default function ChatWidget() {
       {/* 起動ボタン */}
       {!open && (
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setOpen(true);
+            try {
+              sendGAEvent("event", "chat_open");
+            } catch {
+              /* noop */
+            }
+          }}
           aria-label="AIアシスタントを開く"
           className="fixed bottom-4 right-4 z-[60] flex items-center gap-2 rounded-full px-4 py-3 text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
           style={{ backgroundColor: ACCENT }}
