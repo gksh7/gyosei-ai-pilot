@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import ConsultCTA from "@/components/ConsultCTA";
 import PageTracker from "./PageTracker";
 import { getMatchingAffiliates } from "@/lib/affiliates";
 import AffiliateSidebar from "@/components/AffiliateSidebar";
@@ -238,6 +239,10 @@ export default async function ArticlePage({
           </dl>
         </div>
       )}
+
+      <div className="mt-10 pt-6 border-t border-gray-200">
+        <ConsultCTA source="article" context={article.slug} />
+      </div>
 
       {sources.length > 0 && (
         <div className="mt-10 pt-6 border-t border-gray-200">
